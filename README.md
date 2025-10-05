@@ -11,6 +11,8 @@
 
 A lightweight, reactive internationalization library.
 
+![export size](https://embrajs.github.io/i18n/assets/export-size.svg)
+
 ## Install
 
 ```bash
