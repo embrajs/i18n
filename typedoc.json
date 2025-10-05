@@ -1,0 +1,20 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "cleanOutputDir": true,
+  "customCss": "./assets/docs.css",
+  "entryPoints": ["./src/index.ts", "./src/react/index.ts"],
+  "excludeInternal": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "externalSymbolLinkMappings": {
+    "@embra/reactivity": {
+      "*": "https://embrajs.github.io/reactivity/modules/index.html",
+      "Readable": "https://embrajs.github.io/reactivity/interfaces/index.Readable.html",
+      "Writable": "https://embrajs.github.io/reactivity/interfaces/index.Writable.html"
+    }
+  },
+  "hideGenerator": true,
+  "includeVersion": true,
+  "out": "docs",
+  "visibilityFilters": {}
+}

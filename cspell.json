@@ -1,0 +1,34 @@
+{
+  "language": "en",
+  "words": [
+    "computeds",
+    "coverallsapp",
+    "CRIMX",
+    "embra",
+    "embrajs",
+    "endregion",
+    "hyrious",
+    "lcov",
+    "microtask",
+    "Parens",
+    "pnpm",
+    "preinstall",
+    "Readables",
+    "treeshake",
+    "tsup",
+    "typedoc",
+    "unmark",
+    "vite",
+    "vitest",
+    "wopjs",
+    "yoctocolors"
+  ],
+  "ignorePaths": [
+    "**/coverage/**",
+    "**/node_modules/**",
+    "**/dist/**",
+    "cspell.config.js",
+    "pnpm-lock.yaml",
+    "CHANGELOG.md"
+  ]
+}
