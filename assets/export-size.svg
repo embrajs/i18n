@@ -89,7 +89,7 @@
       <g transform="translate(0, 0)">
   <g class="stagger" style="animation-delay: 100ms">
     <text x="2" y="15" class="text">export * from "@embra/i18n"</text>
-    <text x="315" y="34" class="text">814 B</text>
+    <text x="315" y="34" class="text">823 B</text>
 
     <svg width="300" x="0" y="25">
       <rect rx="5" ry="5" x="0" y="0" width="300" height="8" fill="#fb4c1b37"></rect>
@@ -107,7 +107,7 @@
 
     <svg width="300" x="0" y="25">
       <rect rx="5" ry="5" x="0" y="0" width="300" height="8" fill="#fb4c1b37"></rect>
-      <svg width="73.83292383292384%">
+      <svg width="73.0255164034022%">
         <rect height="8" fill="#fb4a1b" rx="5" ry="5" x="0" y="0" class="progress" style="animation-delay: 550ms" />
       </svg>
     </svg>

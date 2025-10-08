@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>26/26</span>
+                <span class='fraction'>27/27</span>
             </div>
         
             
@@ -202,9 +202,7 @@
 <a name='L137'></a><a href='#L137'>137</a>
 <a name='L138'></a><a href='#L138'>138</a>
 <a name='L139'></a><a href='#L139'>139</a>
-<a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a>
-<a name='L142'></a><a href='#L142'>142</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L140'></a><a href='#L140'>140</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -248,8 +246,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">22x</span>
-<span class="cline-any cline-yes">26x</span>
-<span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">22x</span>
@@ -287,10 +283,6 @@
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">22x</span>
-<span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-yes">13x</span>
@@ -301,11 +293,15 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">36x</span>
-<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -381,16 +377,14 @@ export class I18n {
 &nbsp;
   /** Current lang. */
   public get lang(): LocaleLang {
-    return this.lang$.value;
+    return this.lang$.get();
   }
 &nbsp;
   /** A {@link Readable} of current translate function. */
   public readonly t$: Readable&lt;TFunction&gt;;
 &nbsp;
-  /** Current translate function. */
-  public get t(): TFunction {
-    return this.t$.value;
-  }
+  /** Translation function that uses the current `t$` function. */
+  public readonly t: TFunction = (keyPath, args) =&gt; this.t$.get()(keyPath, args);
 &nbsp;
   /** Fetch locale of the specified lang. */
   public fetcher?: LocaleFetcher;
@@ -400,7 +394,7 @@ export class I18n {
 &nbsp;
   /** All loaded locales. */
   public get locales(): Locales {
-    return this.locales$.value;
+    return this.locales$.get();
   }
 &nbsp;
   /** A {@link Readable} of current locale. */
@@ -408,7 +402,7 @@ export class I18n {
 &nbsp;
   /** Current locale */
   public get locale(): Locale {
-    return this.locale$.value;
+    return this.locale$.get();
   }
 &nbsp;
   /** @internal */
@@ -427,12 +421,8 @@ export class I18n {
 &nbsp;
     this._flatLocale$_ = compute(get =&gt; flattenLocale(get(this.locale$)));
 &nbsp;
-    this.t$ = compute(get =&gt; {
-      localeFns.clear();
-&nbsp;
-      const flatLocale = get(this._flatLocale$_);
-&nbsp;
-      return (key: string, args?: TFunctionArgs): string =&gt; {
+    this.t$ = compute(get =&gt;
+      ((flatLocale: FlatLocale, key: string, args?: TFunctionArgs): string =&gt; {
         if (args) {
           const modifier = args["@"];
           if (modifier != null) {
@@ -441,13 +431,17 @@ export class I18n {
               key = modifierKey;
             }
           }
-          let fn = localeFns.get(key);
-          fn || localeFns.set(key, (fn = createTemplateMessageFn(flatLocale[key] || key)));
-          return fn(args);
+          if (flatLocale[key]) {
+            let fn = localeFns.get(key);
+            fn ?? localeFns.set(key, (fn = createTemplateMessageFn(flatLocale[key])));
+            if (fn) {
+              return fn(args);
+            }
+          }
         }
         return flatLocale[key] || key;
-      };
-    });
+      }).bind(localeFns.clear(), get(this._flatLocale$_)),
+    );
   }
 &nbsp;
   /**
@@ -456,7 +450,7 @@ export class I18n {
    * @returns — a promise that resolves when the new locale is fetched.
    */
   public async switchLang(lang: LocaleLang): Promise&lt;void&gt; {
-    if (!this.locales$.value[lang] &amp;&amp; this.fetcher) {
+    if (!this.locales$.get()[lang] &amp;&amp; this.fetcher) {
       this.addLocale(lang, await this.fetcher(lang));
     }
     (this.lang$ as Writable&lt;LocaleLang&gt;).set(lang);
@@ -466,7 +460,7 @@ export class I18n {
    * @returns — boolean indicating whether a message with the specified key in current language exists or not.
    */
   public hasKey(key: string): boolean {
-    return !!this._flatLocale$_.value[key];
+    return !!this._flatLocale$_.get()[key];
   }
 &nbsp;
   /**
@@ -493,7 +487,7 @@ export class I18n {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-05T17:09:18.802Z
+                at 2025-10-08T11:57:23.755Z
             </div>
         <script src="../prettify.js"></script>
         <script>
