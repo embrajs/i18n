@@ -34,16 +34,14 @@ export class I18n {
 
   /** Current lang. */
   public get lang(): LocaleLang {
-    return this.lang$.value;
+    return this.lang$.get();
   }
 
   /** A {@link Readable} of current translate function. */
   public readonly t$: Readable<TFunction>;
 
-  /** Current translate function. */
-  public get t(): TFunction {
-    return this.t$.value;
-  }
+  /** Translation function that uses the current `t$` function. */
+  public readonly t: TFunction = (keyPath, args) => this.t$.get()(keyPath, args);
 
   /** Fetch locale of the specified lang. */
   public fetcher?: LocaleFetcher;
@@ -53,7 +51,7 @@ export class I18n {
 
   /** All loaded locales. */
   public get locales(): Locales {
-    return this.locales$.value;
+    return this.locales$.get();
   }
 
   /** A {@link Readable} of current locale. */
@@ -61,7 +59,7 @@ export class I18n {
 
   /** Current locale */
   public get locale(): Locale {
-    return this.locale$.value;
+    return this.locale$.get();
   }
 
   /** @internal */
@@ -80,12 +78,8 @@ export class I18n {
 
     this._flatLocale$_ = compute(get => flattenLocale(get(this.locale$)));
 
-    this.t$ = compute(get => {
-      localeFns.clear();
-
-      const flatLocale = get(this._flatLocale$_);
-
-      return (key: string, args?: TFunctionArgs): string => {
+    this.t$ = compute(get =>
+      ((flatLocale: FlatLocale, key: string, args?: TFunctionArgs): string => {
         if (args) {
           const modifier = args["@"];
           if (modifier != null) {
@@ -94,13 +88,17 @@ export class I18n {
               key = modifierKey;
             }
           }
-          let fn = localeFns.get(key);
-          fn || localeFns.set(key, (fn = createTemplateMessageFn(flatLocale[key] || key)));
-          return fn(args);
+          if (flatLocale[key]) {
+            let fn = localeFns.get(key);
+            fn ?? localeFns.set(key, (fn = createTemplateMessageFn(flatLocale[key])));
+            if (fn) {
+              return fn(args);
+            }
+          }
         }
         return flatLocale[key] || key;
-      };
-    });
+      }).bind(localeFns.clear(), get(this._flatLocale$_)),
+    );
   }
 
   /**
@@ -109,7 +107,7 @@ export class I18n {
    * @returns — a promise that resolves when the new locale is fetched.
    */
   public async switchLang(lang: LocaleLang): Promise<void> {
-    if (!this.locales$.value[lang] && this.fetcher) {
+    if (!this.locales$.get()[lang] && this.fetcher) {
       this.addLocale(lang, await this.fetcher(lang));
     }
     (this.lang$ as Writable<LocaleLang>).set(lang);
@@ -119,7 +117,7 @@ export class I18n {
    * @returns — boolean indicating whether a message with the specified key in current language exists or not.
    */
   public hasKey(key: string): boolean {
-    return !!this._flatLocale$_.value[key];
+    return !!this._flatLocale$_.get()[key];
   }
 
   /**

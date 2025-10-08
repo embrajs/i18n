@@ -19,7 +19,7 @@ describe("i18n", () => {
     expect(i18n.t("daily.fruit.stock")).toBe("apple");
   });
 
-  it("should update t function when lang changes", async () => {
+  it("should not change i18n.t function when lang changes", async () => {
     const locales: Locales = {
       en: { apple: "apple" },
       zh: { apple: "苹果" },
@@ -30,7 +30,7 @@ describe("i18n", () => {
     expect(i18n.t("apple")).toBe("apple");
 
     await i18n.switchLang("zh");
-    expect(i18n.t).not.toBe(enT);
+    expect(i18n.t).toBe(enT);
     expect(i18n.t("apple")).toBe("苹果");
   });
 
