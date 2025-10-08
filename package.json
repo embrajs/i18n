@@ -1,6 +1,6 @@
 {
   "name": "@embra/i18n",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A lightweight, reactive internationalization library.",
   "repository": "embrajs/i18n",
   "main": "./dist/index.js",
