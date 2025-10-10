@@ -27,6 +27,11 @@ describe("useI18n", () => {
     });
     expect(result.current).toBeInstanceOf(Error);
   });
+
+  it("should return undefined if optional and no i18n context", () => {
+    const { result } = renderHook(() => useI18n(true));
+    expect(result.current).toBeUndefined();
+  });
 });
 
 describe("useTranslate", () => {
@@ -84,6 +89,11 @@ describe("useTranslate", () => {
     });
     expect(result.current).toBeInstanceOf(Error);
   });
+
+  it("should return undefined if optional and no i18n context", () => {
+    const { result } = renderHook(() => useTranslate(true));
+    expect(result.current).toBeUndefined();
+  });
 });
 
 describe("useLang", () => {
@@ -107,5 +117,10 @@ describe("useLang", () => {
     await act(async () => i18n.switchLang("zh"));
 
     expect(result.current).toBe("zh");
+  });
+
+  it("should return undefined if optional and no i18n context", () => {
+    const { result } = renderHook(() => useLang(true));
+    expect(result.current).toBeUndefined();
   });
 });
