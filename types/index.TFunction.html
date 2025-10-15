@@ -69,11 +69,6 @@
           ><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span>
           <span class="tsd-signature-type">string</span>
         </div>
-        <div class="tsd-comment tsd-typography">
-          <p>
-            Get locale message by key-path(<code>&quot;a.b.c&quot;</code>) with optional arguments for interpolation
-          </p>
-        </div>
         <div class="tsd-type-declaration">
           <h4>Type Declaration</h4>
           <ul class="tsd-parameters">
@@ -97,6 +92,9 @@
                           ><span class="tsd-kind-parameter">keyPath</span>:
                           <span class="tsd-signature-type">string</span></span
                         >
+                        <div class="tsd-comment tsd-typography">
+                          <p>Dot-separated key path to the locale message, e.g. <code>&quot;a.b.c&quot;</code></p>
+                        </div>
                       </li>
                       <li>
                         <span
@@ -105,11 +103,12 @@
                             >TFunctionArgs</a
                           ></span
                         >
+                        <div class="tsd-comment tsd-typography"><p>Optional arguments for interpolation</p></div>
                       </li>
                     </ul>
                   </div>
                   <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-                  <p>locale message or empty string if not found</p>
+                  <p>locale message or <code>keyPath</code> if not found</p>
                 </li>
               </ul>
             </li>
@@ -120,8 +119,8 @@
             <li>
               Defined in
               <a
-                href="https://github.com/embrajs/i18n/blob/511de13a9ad9596ae976316db09fc7ca432daaa7/src/interface.ts#L21"
-                >interface.ts:21</a
+                href="https://github.com/embrajs/i18n/blob/3fbb0ef5975faa2f28a8c6a225de41dc7339e955/src/interface.ts#L25"
+                >interface.ts:25</a
               >
             </li>
           </ul>
