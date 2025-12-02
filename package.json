@@ -81,6 +81,7 @@
     "commit-and-tag-version": "^12.6.1",
     "eslint": "^9.39.1",
     "export-size-svg": "^0.0.7",
+    "jsdom": "^27.2.0",
     "prettier": "^3.7.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
