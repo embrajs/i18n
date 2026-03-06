@@ -1,4 +1,4 @@
-import { type Readable } from "@embra/reactivity";
+import type { Readable } from "@embra/reactivity";
 
 export type LocaleLang = string;
 
@@ -14,7 +14,7 @@ export type TFunctionArgs = {
    * Modifier matching.
    * @see {@link https://github.com/embrajs/i18n#modifier-matching}
    */
-  readonly ["@"]?: string | number;
+  readonly "@"?: string | number;
 };
 
 /**
@@ -26,6 +26,4 @@ export type TFunction = (keyPath: string, args?: TFunctionArgs) => string;
 
 export type TFunctionObservable = Readable<TFunction>;
 
-export interface LocaleFetcher {
-  (lang: LocaleLang): Promise<Locale> | Locale;
-}
+export type LocaleFetcher = (lang: LocaleLang) => Promise<Locale> | Locale;

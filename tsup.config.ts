@@ -8,7 +8,7 @@ export default defineConfig({
   entry: {
     index: "src/index.ts",
   },
-  esbuildOptions: options => {
+  esbuildOptions: (options) => {
     options.sourcesContent = false;
     options.mangleProps = /[^_]_$/;
     options.mangleCache = mangleCache;

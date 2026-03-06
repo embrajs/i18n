@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 
-import { type LocaleFetcher, type Locales, I18n } from "../src";
+import { I18n, type LocaleFetcher, type Locales } from "../src";
 
 describe("i18n", () => {
   it("smoke test", () => {
@@ -71,7 +71,7 @@ describe("i18n", () => {
 
 describe("locale loader", () => {
   it("should loaded locales asynchronously", async () => {
-    const fakeLocaleFetcher: LocaleFetcher = async lang => {
+    const fakeLocaleFetcher: LocaleFetcher = async (lang) => {
       const locales: Locales = {
         en: { apple: "apple" },
         zh: { apple: "苹果" },
@@ -88,7 +88,7 @@ describe("locale loader", () => {
   });
 
   it("should support dynamic import", async () => {
-    const i18n = await I18n.preload("en", lang => import(`./locales/${lang}.json`));
+    const i18n = await I18n.preload("en", (lang) => import(`./locales/${lang}.json`));
 
     expect(i18n.t("stock.fruit")).toBe("apple");
 

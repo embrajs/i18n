@@ -1,4 +1,4 @@
-import { type TFunctionArgs } from "./interface";
+import type { TFunctionArgs } from "./interface";
 
 export type TemplateMessageFn = (args: TFunctionArgs) => string;
 

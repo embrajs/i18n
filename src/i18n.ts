@@ -3,19 +3,12 @@ import {
   type OwnedReadable,
   type OwnedWritable,
   type Readable,
-  writable,
   type Writable,
+  writable,
 } from "@embra/reactivity";
 
 import { type FlatLocale, flattenLocale } from "./flat-locales";
-import {
-  type Locale,
-  type LocaleFetcher,
-  type LocaleLang,
-  type Locales,
-  type TFunction,
-  type TFunctionArgs,
-} from "./interface";
+import type { Locale, LocaleFetcher, LocaleLang, Locales, TFunction, TFunctionArgs } from "./interface";
 import { createTemplateMessageFn, type LocaleTemplateMessageFns } from "./template-message";
 
 export interface I18nOptions {
@@ -74,11 +67,11 @@ export class I18n {
 
     this.lang$ = writable(initialLang);
 
-    this.locale$ = compute(get => get(this.locales$)[get(this.lang$)] || {});
+    this.locale$ = compute((get) => get(this.locales$)[get(this.lang$)] || {});
 
-    this._flatLocale$_ = compute(get => flattenLocale(get(this.locale$)));
+    this._flatLocale$_ = compute((get) => flattenLocale(get(this.locale$)));
 
-    this.t$ = compute(get =>
+    this.t$ = compute((get) =>
       ((flatLocale: FlatLocale, key: string, args?: TFunctionArgs): string => {
         if (args) {
           const modifier = args["@"];

@@ -1,8 +1,9 @@
 // @vitest-environment jsdom
+/** biome-ignore-all lint/correctness/useHookAtTopLevel: test error */
 
-import { type Locales, I18n } from "@embra/i18n";
+import { I18n, type Locales } from "@embra/i18n";
 import { act, renderHook } from "@testing-library/react";
-import React, { type PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import { describe, expect, it } from "vitest";
 
 import { I18nProvider, useI18n, useLang, useTranslate } from "../../src/react";

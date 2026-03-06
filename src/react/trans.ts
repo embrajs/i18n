@@ -1,11 +1,11 @@
 import {
+  createElement,
   type FC,
+  Fragment,
+  isValidElement,
   type PropsWithChildren,
   type ReactNode,
-  isValidElement,
   useMemo,
-  createElement,
-  Fragment,
 } from "react";
 
 export interface TProps {
@@ -46,8 +46,6 @@ export interface TProps {
  * ```
  */
 export const Trans: FC<PropsWithChildren<TProps>> = ({ message, children }) => {
-  if (!message) return null;
-
   const slices = useMemo(() => {
     const slices: string[] = [];
     const matchArgs = /{{(\S+?)}}/gi;
@@ -60,6 +58,8 @@ export const Trans: FC<PropsWithChildren<TProps>> = ({ message, children }) => {
     slices.push(message.slice(pointer));
     return slices;
   }, [message]);
+
+  if (!message) return null;
 
   // no template
   if (slices.length === 1) return createElement(Fragment, null, message);

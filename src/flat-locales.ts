@@ -1,4 +1,4 @@
-import { type Locale } from "./interface";
+import type { Locale } from "./interface";
 
 export type FlatLocale = Record<string, string>;
 
@@ -10,7 +10,7 @@ export const flattenLocale = (locale: Locale, flatLocale: FlatLocale = {}, prefi
     if (typeof value === "string") {
       flatLocale[prefix + key] = value;
     } else {
-      flattenLocale(value, flatLocale, prefix + key + ".");
+      flattenLocale(value, flatLocale, `${prefix + key}.`);
     }
   }
   return flatLocale;

@@ -1,4 +1,4 @@
-name: Node.js Package
+name: Publish NPM Package
 
 on:
   push:
@@ -19,19 +19,22 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js 🟢
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
           registry-url: "https://registry.npmjs.org"
           cache: npm
 
       - name: Install dependencies 📦
-        run: npm install
+        run: npm ci
+        env:
+          npm_config_audit: "false"
+          npm_config_fund: "false"
+          npm_config_loglevel: "error"
 
       - name: Build 🔧
         run: npm run build
 
       - name: Publish Package 🚀
         run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
