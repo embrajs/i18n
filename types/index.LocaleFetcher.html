@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
-    <title>TFunction | @embra/i18n - v0.0.4</title>
+    <title>LocaleFetcher | @embra/i18n - v0.0.4</title>
     <meta name="description" content="Documentation for @embra/i18n">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../assets/style.css">
@@ -56,20 +56,22 @@
         <div class="tsd-page-title">
           <ul class="tsd-breadcrumb" aria-label="Breadcrumb">
             <li><a href="../modules/index.html">index</a></li>
-            <li><a href="" aria-current="page">TFunction</a></li>
+            <li><a href="" aria-current="page">LocaleFetcher</a></li>
           </ul>
-          <h1>Type Alias TFunction</h1>
+          <h1>Type Alias LocaleFetcher</h1>
         </div>
         <div class="tsd-signature">
-          <span class="tsd-kind-type-alias">TFunction</span><span class="tsd-signature-symbol">:</span>
-          <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">keyPath</span
-          ><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span
-          ><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">args</span
-          ><span class="tsd-signature-symbol">?:</span>
-          <a href="index.TFunctionArgs.html" class="tsd-signature-type tsd-kind-type-alias">TFunctionArgs</a><span
+          <span class="tsd-kind-type-alias">LocaleFetcher</span><span class="tsd-signature-symbol">:</span>
+          <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">lang</span
+          ><span class="tsd-signature-symbol">:</span>
+          <a href="index.LocaleLang.html" class="tsd-signature-type tsd-kind-type-alias">LocaleLang</a><span
             class="tsd-signature-symbol"
             >)</span
-          > <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">string</span>
+          > <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">Promise</span
+          ><span class="tsd-signature-symbol">&lt;</span
+          ><a href="index.Locale.html" class="tsd-signature-type tsd-kind-type-alias">Locale</a
+          ><span class="tsd-signature-symbol">&gt;</span> <span class="tsd-signature-symbol">|</span>
+          <a href="index.Locale.html" class="tsd-signature-type tsd-kind-type-alias">Locale</a>
         </div>
         <div class="tsd-type-declaration">
           <h4>Type Declaration</h4>
@@ -77,14 +79,16 @@
             <li class="tsd-parameter-signature">
               <ul class="tsd-signatures">
                 <li class="tsd-signature" id="__type">
-                  <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">keyPath</span
-                  ><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span
-                  ><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">args</span
-                  ><span class="tsd-signature-symbol">?:</span>
-                  <a href="index.TFunctionArgs.html" class="tsd-signature-type tsd-kind-type-alias"
-                    >TFunctionArgs</a
-                  ><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span>
-                  <span class="tsd-signature-type">string</span>
+                  <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">lang</span
+                  ><span class="tsd-signature-symbol">:</span>
+                  <a href="index.LocaleLang.html" class="tsd-signature-type tsd-kind-type-alias">LocaleLang</a><span
+                    class="tsd-signature-symbol"
+                    >)</span
+                  ><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span
+                  ><span class="tsd-signature-symbol">&lt;</span
+                  ><a href="index.Locale.html" class="tsd-signature-type tsd-kind-type-alias">Locale</a
+                  ><span class="tsd-signature-symbol">&gt;</span> <span class="tsd-signature-symbol">|</span>
+                  <a href="index.Locale.html" class="tsd-signature-type tsd-kind-type-alias">Locale</a>
                 </li>
                 <li class="tsd-description">
                   <div class="tsd-parameters">
@@ -92,26 +96,20 @@
                     <ul class="tsd-parameter-list">
                       <li>
                         <span
-                          ><span class="tsd-kind-parameter">keyPath</span>:
-                          <span class="tsd-signature-type">string</span></span
-                        >
-                        <div class="tsd-comment tsd-typography">
-                          <p>Dot-separated key path to the locale message, e.g. <code>&quot;a.b.c&quot;</code></p>
-                        </div>
-                      </li>
-                      <li>
-                        <span
-                          ><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">args</span>:
-                          <a href="index.TFunctionArgs.html" class="tsd-signature-type tsd-kind-type-alias"
-                            >TFunctionArgs</a
+                          ><span class="tsd-kind-parameter">lang</span>:
+                          <a href="index.LocaleLang.html" class="tsd-signature-type tsd-kind-type-alias"
+                            >LocaleLang</a
                           ></span
                         >
-                        <div class="tsd-comment tsd-typography"><p>Optional arguments for interpolation</p></div>
                       </li>
                     </ul>
                   </div>
-                  <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-                  <p>locale message or <code>keyPath</code> if not found</p>
+                  <h4 class="tsd-returns-title">
+                    Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span
+                    ><a href="index.Locale.html" class="tsd-signature-type tsd-kind-type-alias">Locale</a
+                    ><span class="tsd-signature-symbol">&gt;</span> <span class="tsd-signature-symbol">|</span>
+                    <a href="index.Locale.html" class="tsd-signature-type tsd-kind-type-alias">Locale</a>
+                  </h4>
                 </li>
               </ul>
             </li>
@@ -122,8 +120,8 @@
             <li>
               Defined in
               <a
-                href="https://github.com/embrajs/i18n/blob/3e529d8aae223493bcd9585a7c66c8993135d7c8/src/interface.ts#L25"
-                >interface.ts:25</a
+                href="https://github.com/embrajs/i18n/blob/3e529d8aae223493bcd9585a7c66c8993135d7c8/src/interface.ts#L29"
+                >interface.ts:29</a
               >
             </li>
           </ul>

@@ -1,14 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="default" lang="en" data-base="../">
   <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="IE=edge" />
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
     <title>Trans | @embra/i18n - v0.0.4</title>
-    <meta name="description" content="Documentation for @embra/i18n" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../assets/style.css" />
-    <link rel="stylesheet" href="../assets/highlight.css" />
-    <link rel="stylesheet" href="../assets/custom.css" />
+    <meta name="description" content="Documentation for @embra/i18n">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="stylesheet" href="../assets/highlight.css">
+    <link rel="stylesheet" href="../assets/custom.css">
     <script defer src="../assets/main.js"></script>
     <script async src="../assets/icons.js" id="tsd-icons-script"></script>
     <script async src="../assets/search.js" id="tsd-search-script"></script>
@@ -16,9 +16,9 @@
   </head>
   <body>
     <script>
-      document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";
-      document.body.style.display = "none";
-      setTimeout(() => (window.app ? app.showPage() : document.body.style.removeProperty("display")), 500);
+    document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";
+    document.body.style.display = "none";
+    setTimeout(() => (window.app ? app.showPage() : document.body.style.removeProperty("display")), 500);
     </script>
     <header class="tsd-page-toolbar">
       <div class="tsd-toolbar-contents container">
@@ -40,14 +40,15 @@
             autocomplete="off"
             placeholder="Search the docs"
             maxlength="100"
-          />
+          >
           <ul role="listbox" id="tsd-search-results"></ul>
           <div id="tsd-search-status" aria-live="polite" aria-atomic="true"><div>Preparing search index...</div></div>
         </dialog>
         <a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"
           ><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <use href="../assets/icons.svg#icon-menu"></use></svg
-        ></a>
+            <use href="../assets/icons.svg#icon-menu"></use>
+          </svg></a
+        >
       </div>
     </header>
     <div class="container container-main">
@@ -72,14 +73,16 @@
           <div class="tsd-tag-example">
             <h4 class="tsd-anchor-link" id="example">
               Example<a href="#example" aria-label="Permalink" class="tsd-anchor-icon"
-                ><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg
-              ></a>
+                ><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a
+              >
             </h4>
-            <pre><code class="tsx"><span class="hl-15">&lt;</span><span class="hl-7">Trans</span><span class="hl-1"> </span><span class="hl-18">message</span><span class="hl-1">=</span><span class="hl-2">&quot;a{{b}}c{{d}}e&quot;</span><span class="hl-15">&gt;</span><br/><span class="hl-1">  </span><span class="hl-15">&lt;</span><span class="hl-16">h1</span><span class="hl-1"> </span><span class="hl-18">data-t-slot</span><span class="hl-1">=</span><span class="hl-2">&quot;b&quot;</span><span class="hl-15">&gt;</span><span class="hl-1">B</span><span class="hl-15">&lt;/</span><span class="hl-16">h1</span><span class="hl-15">&gt;</span><br/><span class="hl-1">  </span><span class="hl-15">&lt;</span><span class="hl-16">p</span><span class="hl-1"> </span><span class="hl-18">data-t-slot</span><span class="hl-1">=</span><span class="hl-2">&quot;d&quot;</span><span class="hl-15">&gt;</span><span class="hl-1">D</span><span class="hl-15">&lt;/</span><span class="hl-16">p</span><span class="hl-15">&gt;</span><br/><span class="hl-15">&lt;/</span><span class="hl-7">Trans</span><span class="hl-15">&gt;</span>
+            <pre
+            ><code class="tsx"><span class="hl-15">&lt;</span><span class="hl-7">Trans</span><span class="hl-1"> </span><span class="hl-18">message</span><span class="hl-1">=</span><span class="hl-2">&quot;a{{b}}c{{d}}e&quot;</span><span class="hl-15">&gt;</span><br/><span class="hl-1">  </span><span class="hl-15">&lt;</span><span class="hl-16">h1</span><span class="hl-1"> </span><span class="hl-18">data-t-slot</span><span class="hl-1">=</span><span class="hl-2">&quot;b&quot;</span><span class="hl-15">&gt;</span><span class="hl-1">B</span><span class="hl-15">&lt;/</span><span class="hl-16">h1</span><span class="hl-15">&gt;</span><br/><span class="hl-1">  </span><span class="hl-15">&lt;</span><span class="hl-16">p</span><span class="hl-1"> </span><span class="hl-18">data-t-slot</span><span class="hl-1">=</span><span class="hl-2">&quot;d&quot;</span><span class="hl-15">&gt;</span><span class="hl-1">D</span><span class="hl-15">&lt;/</span><span class="hl-16">p</span><span class="hl-15">&gt;</span><br/><span class="hl-15">&lt;/</span><span class="hl-7">Trans</span><span class="hl-15">&gt;</span>
 </code><button type="button">Copy</button></pre>
 
             <p>↓</p>
-            <pre><code class="tsx"><span class="hl-15">&lt;&gt;</span><br/><span class="hl-1">  a</span><span class="hl-15">&lt;</span><span class="hl-16">h1</span><span class="hl-1"> </span><span class="hl-18">data-t-slot</span><span class="hl-1">=</span><span class="hl-2">&quot;b&quot;</span><span class="hl-15">&gt;</span><span class="hl-1">B</span><span class="hl-15">&lt;/</span><span class="hl-16">h1</span><span class="hl-15">&gt;</span><span class="hl-1">c</span><span class="hl-15">&lt;</span><span class="hl-16">p</span><span class="hl-1"> </span><span class="hl-18">data-t-slot</span><span class="hl-1">=</span><span class="hl-2">&quot;d&quot;</span><span class="hl-15">&gt;</span><span class="hl-1">D</span><span class="hl-15">&lt;/</span><span class="hl-16">p</span><span class="hl-15">&gt;</span><span class="hl-1">e</span><br/><span class="hl-15">&lt;&gt;</span>
+            <pre
+            ><code class="tsx"><span class="hl-15">&lt;&gt;</span><br/><span class="hl-1">  a</span><span class="hl-15">&lt;</span><span class="hl-16">h1</span><span class="hl-1"> </span><span class="hl-18">data-t-slot</span><span class="hl-1">=</span><span class="hl-2">&quot;b&quot;</span><span class="hl-15">&gt;</span><span class="hl-1">B</span><span class="hl-15">&lt;/</span><span class="hl-16">h1</span><span class="hl-15">&gt;</span><span class="hl-1">c</span><span class="hl-15">&lt;</span><span class="hl-16">p</span><span class="hl-1"> </span><span class="hl-18">data-t-slot</span><span class="hl-1">=</span><span class="hl-2">&quot;d&quot;</span><span class="hl-15">&gt;</span><span class="hl-1">D</span><span class="hl-15">&lt;/</span><span class="hl-16">p</span><span class="hl-15">&gt;</span><span class="hl-1">e</span><br/><span class="hl-15">&lt;&gt;</span>
 </code><button type="button">Copy</button></pre>
 
             <p><code>data-t-slot</code> can be ignored if there is only one placeholder.</p>
@@ -87,14 +90,16 @@
           <div class="tsd-tag-example">
             <h4 class="tsd-anchor-link" id="example-1">
               Example<a href="#example-1" aria-label="Permalink" class="tsd-anchor-icon"
-                ><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg
-              ></a>
+                ><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a
+              >
             </h4>
-            <pre><code class="tsx"><span class="hl-15">&lt;</span><span class="hl-7">Trans</span><span class="hl-1"> </span><span class="hl-18">message</span><span class="hl-1">=</span><span class="hl-2">&quot;a{{b}}c&quot;</span><span class="hl-15">&gt;</span><br/><span class="hl-1">  </span><span class="hl-15">&lt;</span><span class="hl-16">h1</span><span class="hl-15">&gt;</span><span class="hl-1">B</span><span class="hl-15">&lt;/</span><span class="hl-16">h1</span><span class="hl-15">&gt;</span><br/><span class="hl-15">&lt;/</span><span class="hl-7">Trans</span><span class="hl-15">&gt;</span>
+            <pre
+            ><code class="tsx"><span class="hl-15">&lt;</span><span class="hl-7">Trans</span><span class="hl-1"> </span><span class="hl-18">message</span><span class="hl-1">=</span><span class="hl-2">&quot;a{{b}}c&quot;</span><span class="hl-15">&gt;</span><br/><span class="hl-1">  </span><span class="hl-15">&lt;</span><span class="hl-16">h1</span><span class="hl-15">&gt;</span><span class="hl-1">B</span><span class="hl-15">&lt;/</span><span class="hl-16">h1</span><span class="hl-15">&gt;</span><br/><span class="hl-15">&lt;/</span><span class="hl-7">Trans</span><span class="hl-15">&gt;</span>
 </code><button type="button">Copy</button></pre>
 
             <p>↓</p>
-            <pre><code class="tsx"><span class="hl-15">&lt;&gt;</span><br/><span class="hl-1">  a</span><span class="hl-15">&lt;</span><span class="hl-16">h1</span><span class="hl-15">&gt;</span><span class="hl-1">B</span><span class="hl-15">&lt;/</span><span class="hl-16">h1</span><span class="hl-15">&gt;</span><span class="hl-1">c</span><br/><span class="hl-15">&lt;/&gt;</span>
+            <pre
+            ><code class="tsx"><span class="hl-15">&lt;&gt;</span><br/><span class="hl-1">  a</span><span class="hl-15">&lt;</span><span class="hl-16">h1</span><span class="hl-15">&gt;</span><span class="hl-1">B</span><span class="hl-15">&lt;/</span><span class="hl-16">h1</span><span class="hl-15">&gt;</span><span class="hl-1">c</span><br/><span class="hl-15">&lt;/&gt;</span>
 </code><button type="button">Copy</button></pre>
           </div>
         </div>
@@ -103,7 +108,7 @@
             <li>
               Defined in
               <a
-                href="https://github.com/embrajs/i18n/blob/151584b2f85f89b2b96d475a4e2595559bf3765c/src/react/trans.ts#L48"
+                href="https://github.com/embrajs/i18n/blob/3e529d8aae223493bcd9585a7c66c8993135d7c8/src/react/trans.ts#L48"
                 >react/trans.ts:48</a
               >
             </li>
