@@ -52,7 +52,7 @@
     "lint:ci": "biome ci",
     "ts-check": "tsc --noEmit",
     "ts-watch": "tsc --noEmit -w",
-    "docs": "typedoc --options typedoc.json && biome format --write --config-path=biome.docs.json --files-ignore-unknown=true docs",
+    "docs": "typedoc --options typedoc.json && biome format --write --config-path=biome.docs.json --files-ignore-unknown=true docs && export-size-svg",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:ci": "vitest run --coverage --coverage.reportsDirectory='./docs/coverage'",
