@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
-    <title>I18nOptions | @embra/i18n - v0.0.4</title>
+    <title>I18nOptions | @embra/i18n - v0.0.5</title>
     <meta name="description" content="Documentation for @embra/i18n">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../assets/style.css">
@@ -22,7 +22,7 @@
     </script>
     <header class="tsd-page-toolbar">
       <div class="tsd-toolbar-contents container">
-        <a href="../index.html" class="title">@embra/i18n - v0.0.4</a>
+        <a href="../index.html" class="title">@embra/i18n - v0.0.5</a>
         <div id="tsd-toolbar-links"></div>
         <button id="tsd-search-trigger" class="tsd-widget" aria-label="Search">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -62,8 +62,10 @@
         </div>
         <div class="tsd-signature">
           <span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">I18nOptions</span>
-          <span class="tsd-signature-symbol">{</span<br>    <a class="tsd-kind-property" href="#fetcher">fetcher</a
-          ><span class="tsd-signature-symbol">:</span>
+          <span class="tsd-signature-symbol">{</span<br>    <a class="tsd-kind-property" href="#fallback">fallback</a
+          ><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span
+          ><span class="tsd-signature-symbol">;</span<br>    <a class="tsd-kind-property" href="#fetcher">fetcher</a
+          ><span class="tsd-signature-symbol">?:</span>
           <a href="../types/index.LocaleFetcher.html" class="tsd-signature-type tsd-kind-type-alias"
             >LocaleFetcher</a
           ><span class="tsd-signature-symbol">;</span<br><span class="tsd-signature-symbol">}</span>
@@ -72,7 +74,7 @@
           <ul>
             <li>
               Defined in
-              <a href="https://github.com/embrajs/i18n/blob/c7622f94db4605e3088cfd700cbfe1937ddaa842/src/i18n.ts#L14"
+              <a href="https://github.com/embrajs/i18n/blob/b8e7432426e8884c1b4cf5660e6ac84eee2ef2aa/src/i18n.ts#L14"
                 >i18n.ts:14</a
               >
             </li>
@@ -91,10 +93,15 @@
                 <section class="tsd-index-section">
                   <h3 class="tsd-index-heading">Properties</h3>
                   <div class="tsd-index-list">
+                    <a href="#fallback" class="tsd-index-link"
+                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property">
+                        <use href="../assets/icons.svg#icon-1024"></use>
+                      </svg><span>fallback?</span></a
+                    >
                     <a href="#fetcher" class="tsd-index-link"
                       ><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property">
                         <use href="../assets/icons.svg#icon-1024"></use>
-                      </svg><span>fetcher</span></a
+                      </svg><span>fetcher?</span></a
                     >
                   </div>
                 </section>
@@ -111,8 +118,36 @@
           </summary>
           <section>
             <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="fallback">
+                <code class="tsd-tag">Optional</code><span>fallback</span
+                ><a href="#fallback" aria-label="Permalink" class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use>
+                  </svg></a
+                >
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">fallback</span><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-type">string</span>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>Fallback language if the current language doesn't have the requested key.</p>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/embrajs/i18n/blob/b8e7432426e8884c1b4cf5660e6ac84eee2ef2aa/src/i18n.ts#L18"
+                      >i18n.ts:18</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
               <h3 class="tsd-anchor-link" id="fetcher">
-                <span>fetcher</span
+                <code class="tsd-tag">Optional</code><span>fetcher</span
                 ><a href="#fetcher" aria-label="Permalink" class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="../assets/icons.svg#icon-anchor"></use>
@@ -120,7 +155,7 @@
                 >
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">fetcher</span><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-kind-property">fetcher</span><span class="tsd-signature-symbol">?:</span>
                 <a href="../types/index.LocaleFetcher.html" class="tsd-signature-type tsd-kind-type-alias"
                   >LocaleFetcher</a
                 >
@@ -131,7 +166,7 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/embrajs/i18n/blob/c7622f94db4605e3088cfd700cbfe1937ddaa842/src/i18n.ts#L16"
+                      href="https://github.com/embrajs/i18n/blob/b8e7432426e8884c1b4cf5660e6ac84eee2ef2aa/src/i18n.ts#L16"
                       >i18n.ts:16</a
                     >
                   </li>
@@ -178,7 +213,11 @@
                   </svg>Properties
                 </summary>
                 <div>
-                  <a href="#fetcher"
+                  <a href="#fallback"
+                    ><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property">
+                      <use href="../assets/icons.svg#icon-1024"></use>
+                    </svg><span>fallback</span></a
+                  ><a href="#fetcher"
                     ><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property">
                       <use href="../assets/icons.svg#icon-1024"></use>
                     </svg><span>fetcher</span></a
@@ -190,7 +229,7 @@
         </div>
         <div class="site-menu">
           <nav class="tsd-navigation">
-            <a href="../modules.html">@embra/i18n - v0.0.4</a>
+            <a href="../modules.html">@embra/i18n - v0.0.5</a>
             <ul class="tsd-small-nested-navigation" id="tsd-nav-container">
               <li>Loading...</li>
             </ul>
