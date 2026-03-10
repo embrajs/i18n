@@ -17,10 +17,10 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js 🟢
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: lts/*
           registry-url: "https://registry.npmjs.org"
@@ -37,4 +37,4 @@ jobs:
         run: npm run build
 
       - name: Publish Package 🚀
-        run: npm publish --provenance --access public
+        run: NODE_AUTH_TOKEN="" npm publish --provenance --access public

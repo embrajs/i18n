@@ -2,7 +2,10 @@
   "name": "@embra/i18n",
   "version": "0.0.5",
   "description": "A lightweight, reactive internationalization library.",
-  "repository": "embrajs/i18n",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/embrajs/i18n.git"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
