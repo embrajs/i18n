@@ -13,7 +13,9 @@ import { createTemplateMessageFn, type LocaleTemplateMessageFns } from "./templa
 
 export interface I18nOptions {
   /** Fetch locale of the specified lang. */
-  fetcher: LocaleFetcher;
+  fetcher?: LocaleFetcher;
+  /** Fallback language if the current language doesn't have the requested key. */
+  fallback?: LocaleLang;
 }
 
 export class I18n {
@@ -60,37 +62,24 @@ export class I18n {
 
   public constructor(initialLang: LocaleLang, locales: Locales, options?: I18nOptions) {
     this.fetcher = options?.fetcher;
-
-    const localeFns: LocaleTemplateMessageFns = new Map();
+    const fallback = options?.fallback;
 
     this.locales$ = writable(locales);
 
     this.lang$ = writable(initialLang);
 
-    this.locale$ = compute((get) => get(this.locales$)[get(this.lang$)] || {});
+    this.locale$ = compute((get) => get(this.locales$)[get(this.lang$)]);
 
     this._flatLocale$_ = compute((get) => flattenLocale(get(this.locale$)));
 
+    const fallbackLocale$ = fallback && compute((get) => fallback !== get(this.lang$) && get(this.locales$)[fallback]);
+
     this.t$ = compute((get) =>
-      ((flatLocale: FlatLocale, key: string, args?: TFunctionArgs): string => {
-        if (args) {
-          const modifier = args["@"];
-          if (modifier != null) {
-            const modifierKey = `${key}@${modifier}`;
-            if (flatLocale[modifierKey]) {
-              key = modifierKey;
-            }
-          }
-          if (flatLocale[key]) {
-            let fn = localeFns.get(key);
-            fn ?? localeFns.set(key, (fn = createTemplateMessageFn(flatLocale[key])));
-            if (fn) {
-              return fn(args);
-            }
-          }
-        }
-        return flatLocale[key] || key;
-      }).bind(localeFns.clear(), get(this._flatLocale$_)),
+      translate.bind(
+        get(this._flatLocale$_),
+        new Map(),
+        get(fallbackLocale$) && translate.bind(flattenLocale(get(fallbackLocale$) as Locale), new Map(), ""),
+      ),
     );
   }
 
@@ -129,4 +118,30 @@ export class I18n {
     (this.locale$ as OwnedReadable).dispose();
     (this._flatLocale$_ as OwnedReadable).dispose();
   }
+}
+
+function translate(
+  this: FlatLocale,
+  localeFns: LocaleTemplateMessageFns,
+  fallbackT: TFunction | null | "" | false | undefined,
+  key: string,
+  args?: TFunctionArgs,
+): string {
+  if (args) {
+    const modifier = args["@"];
+    if (modifier != null) {
+      const modifierKey = `${key}@${modifier}`;
+      if (this[modifierKey]) {
+        key = modifierKey;
+      }
+    }
+    if (this[key]) {
+      let fn = localeFns.get(key);
+      fn ?? localeFns.set(key, (fn = createTemplateMessageFn(this[key])));
+      if (fn) {
+        return fn(args);
+      }
+    }
+  }
+  return this[key] || (fallbackT && fallbackT(key, args)) || key;
 }

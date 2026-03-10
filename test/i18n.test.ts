@@ -174,3 +174,102 @@ describe("template t function", () => {
     expect(i18n.t("fruit", { fruit: "apple" })).toBe("fruit");
   });
 });
+
+describe("fallback", () => {
+  it("should fallback to specified language when key is missing", () => {
+    const locales: Locales = {
+      en: { apple: "apple", banana: "banana" },
+      zh: { apple: "苹果" },
+    };
+    const i18n = new I18n("zh", locales, { fallback: "en" });
+    expect(i18n.t("apple")).toBe("苹果");
+    expect(i18n.t("banana")).toBe("banana");
+  });
+
+  it("should return key if neither current nor fallback has the key", () => {
+    const locales: Locales = {
+      en: { apple: "apple" },
+      zh: { apple: "苹果" },
+    };
+    const i18n = new I18n("zh", locales, { fallback: "en" });
+    expect(i18n.t("missing")).toBe("missing");
+  });
+
+  it("should not fallback when current lang equals fallback lang", () => {
+    const locales: Locales = {
+      en: { apple: "apple" },
+    };
+    const i18n = new I18n("en", locales, { fallback: "en" });
+    expect(i18n.t("apple")).toBe("apple");
+    expect(i18n.t("missing")).toBe("missing");
+  });
+
+  it("should update fallback after switching lang", async () => {
+    const locales: Locales = {
+      en: { apple: "apple", banana: "banana" },
+      zh: { apple: "苹果" },
+    };
+    const i18n = new I18n("en", locales, { fallback: "en" });
+    // Current lang is fallback lang, no fallback effect
+    expect(i18n.t("apple")).toBe("apple");
+
+    await i18n.switchLang("zh");
+    // Now fallback is active
+    expect(i18n.t("apple")).toBe("苹果");
+    expect(i18n.t("banana")).toBe("banana");
+  });
+
+  it("should fallback with template message args", () => {
+    const locales: Locales = {
+      en: { greeting: "Hello {{name}}" },
+      zh: {},
+    };
+    const i18n = new I18n("zh", locales, { fallback: "en" });
+    expect(i18n.t("greeting", { name: "World" })).toBe("Hello World");
+  });
+
+  it("should fallback with modifier", () => {
+    const locales: Locales = {
+      en: {
+        "apple@0": "No apple",
+        "apple@1": "An apple",
+        apple: "{{@}} apples",
+      },
+      zh: {},
+    };
+    const i18n = new I18n("zh", locales, { fallback: "en" });
+    expect(i18n.t("apple", { "@": 0 })).toBe("No apple");
+    expect(i18n.t("apple", { "@": 1 })).toBe("An apple");
+    expect(i18n.t("apple", { "@": 3 })).toBe("3 apples");
+  });
+
+  it("should handle fallback locale not loaded", () => {
+    const locales: Locales = {
+      zh: { apple: "苹果" },
+    };
+    // fallback "en" not in locales
+    const i18n = new I18n("zh", locales, { fallback: "en" });
+    expect(i18n.t("apple")).toBe("苹果");
+    expect(i18n.t("missing")).toBe("missing");
+  });
+
+  it("should pick up fallback locale added later", () => {
+    const locales: Locales = {
+      zh: { apple: "苹果" },
+    };
+    const i18n = new I18n("zh", locales, { fallback: "en" });
+    expect(i18n.t("banana")).toBe("banana");
+
+    i18n.addLocale("en", { banana: "banana" });
+    expect(i18n.t("banana")).toBe("banana");
+  });
+
+  it("should work without fallback option", () => {
+    const locales: Locales = {
+      en: { apple: "apple" },
+    };
+    const i18n = new I18n("en", locales);
+    expect(i18n.t("apple")).toBe("apple");
+    expect(i18n.t("missing")).toBe("missing");
+  });
+});
