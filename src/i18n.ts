@@ -20,8 +20,17 @@ export interface I18nOptions {
 
 export class I18n {
   /** Fetch locale of `initialLang` and return an I18n instance with the locale. */
-  public static async preload(initialLang: LocaleLang, fetcher: LocaleFetcher): Promise<I18n> {
-    return new I18n(initialLang, { [initialLang]: await fetcher(initialLang) }, { fetcher });
+  public static async preload(
+    initialLang: LocaleLang,
+    fetcher: LocaleFetcher,
+    options?: Omit<I18nOptions, "fetcher">,
+  ): Promise<I18n> {
+    const locales = { [initialLang]: await fetcher(initialLang) };
+    const fallback = options?.fallback;
+    if (fallback && fallback !== initialLang) {
+      locales[fallback] = await fetcher(fallback);
+    }
+    return new I18n(initialLang, locales, { ...options, fetcher });
   }
 
   /** A {@link Readable} of current lang. */

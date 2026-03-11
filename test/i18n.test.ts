@@ -175,6 +175,70 @@ describe("template t function", () => {
   });
 });
 
+describe("preload with options", () => {
+  it("should preload with fallback language", async () => {
+    const fetchCalls: string[] = [];
+    const fakeLocaleFetcher: LocaleFetcher = async (lang) => {
+      fetchCalls.push(lang);
+      const locales: Locales = {
+        en: { apple: "apple", banana: "banana" },
+        zh: { apple: "苹果" },
+      };
+      return locales[lang];
+    };
+
+    const i18n = await I18n.preload("zh", fakeLocaleFetcher, { fallback: "en" });
+
+    expect(fetchCalls).toEqual(["zh", "en"]);
+    expect(i18n.t("apple")).toBe("苹果");
+    expect(i18n.t("banana")).toBe("banana");
+  });
+
+  it("should not fetch fallback if same as initial lang", async () => {
+    const fetchCalls: string[] = [];
+    const fakeLocaleFetcher: LocaleFetcher = async (lang) => {
+      fetchCalls.push(lang);
+      const locales: Locales = {
+        en: { apple: "apple" },
+      };
+      return locales[lang];
+    };
+
+    const i18n = await I18n.preload("en", fakeLocaleFetcher, { fallback: "en" });
+
+    expect(fetchCalls).toEqual(["en"]);
+    expect(i18n.t("apple")).toBe("apple");
+  });
+
+  it("should pass fetcher to instance", async () => {
+    const fakeLocaleFetcher: LocaleFetcher = async (lang) => {
+      const locales: Locales = {
+        en: { apple: "apple" },
+        zh: { apple: "苹果" },
+      };
+      return locales[lang];
+    };
+
+    const i18n = await I18n.preload("en", fakeLocaleFetcher);
+
+    expect(i18n.fetcher).toBe(fakeLocaleFetcher);
+  });
+
+  it("should work without options", async () => {
+    const fakeLocaleFetcher: LocaleFetcher = async (lang) => {
+      const locales: Locales = {
+        en: { apple: "apple" },
+      };
+      return locales[lang];
+    };
+
+    const i18n = await I18n.preload("en", fakeLocaleFetcher);
+
+    expect(i18n.t("apple")).toBe("apple");
+    expect(i18n.lang).toBe("en");
+  });
+});
+
 describe("fallback", () => {
   it("should fallback to specified language when key is missing", () => {
     const locales: Locales = {
