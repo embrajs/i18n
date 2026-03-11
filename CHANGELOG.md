@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.6](https://github.com/embrajs/i18n/compare/v0.0.5...v0.0.6) (2026-03-11)
+
+
+### Features
+
+* update I18n.preload to support fallback language and add corresponding tests ([787d6ef](https://github.com/embrajs/i18n/commit/787d6eff190bc650c65f5f64f31793a4d5198b58))
+
+
+### Bug Fixes
+
+* update repository field in package.json to include type and URL ([e78042a](https://github.com/embrajs/i18n/commit/e78042a6fb4e5f68b9e4d161bd86c91477963079))
+
 ## [0.0.5](https://github.com/embrajs/i18n/compare/v0.0.4...v0.0.5) (2026-03-10)
 
 
