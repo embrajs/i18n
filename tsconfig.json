@@ -1,20 +1,18 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "declaration": true,
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
     "lib": ["DOM", "ESNext"],
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noUnusedParameters": true,
     "outDir": "dist",
     "paths": {
-      "@embra/i18n": ["src"]
+      "@embra/i18n": ["./src"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

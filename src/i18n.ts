@@ -67,7 +67,7 @@ export class I18n {
   }
 
   /** @internal */
-  private readonly _flatLocale$_: Readable<FlatLocale>;
+  private readonly _l: Readable<FlatLocale>;
 
   public constructor(initialLang: LocaleLang, locales: Locales, options?: I18nOptions) {
     this.fetcher = options?.fetcher;
@@ -79,13 +79,13 @@ export class I18n {
 
     this.locale$ = compute((get) => get(this.locales$)[get(this.lang$)]);
 
-    this._flatLocale$_ = compute((get) => flattenLocale(get(this.locale$)));
+    this._l = compute((get) => flattenLocale(get(this.locale$)));
 
     const fallbackLocale$ = fallback && compute((get) => fallback !== get(this.lang$) && get(this.locales$)[fallback]);
 
     this.t$ = compute((get) =>
       translate.bind(
-        get(this._flatLocale$_),
+        get(this._l),
         new Map(),
         get(fallbackLocale$) && translate.bind(flattenLocale(get(fallbackLocale$) as Locale), new Map(), ""),
       ),
@@ -108,7 +108,7 @@ export class I18n {
    * @returns — boolean indicating whether a message with the specified key in current language exists or not.
    */
   public hasKey(key: string): boolean {
-    return !!this._flatLocale$_.get()[key];
+    return !!this._l.get()[key];
   }
 
   /**
@@ -125,7 +125,7 @@ export class I18n {
     (this.t$ as OwnedReadable).dispose();
     (this.locales$ as OwnedWritable).dispose();
     (this.locale$ as OwnedReadable).dispose();
-    (this._flatLocale$_ as OwnedReadable).dispose();
+    (this._l as OwnedReadable).dispose();
   }
 }
 
