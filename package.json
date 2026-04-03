@@ -84,8 +84,6 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitest/coverage-v8": "^4.0.18",
-    "@wopjs/eslint-config": "^0.1.68",
-    "@wopjs/gzip-size": "^0.1.5",
     "commit-and-tag-version": "^12.6.1",
     "export-size-svg": "^0.0.7",
     "jsdom": "^28.1.0",
