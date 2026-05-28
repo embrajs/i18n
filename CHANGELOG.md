@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.8](https://github.com/embrajs/i18n/compare/v0.0.7...v0.0.8) (2026-05-28)
+
+
+### Features
+
+* add astro ([4f56f3c](https://github.com/embrajs/i18n/commit/4f56f3c63ded138e2ac7f7b5845b0378644ca3bc))
+* add llms.txt ([34fc424](https://github.com/embrajs/i18n/commit/34fc4246ca0e825479d58b19216d622d32afc14b))
+
 ## [0.0.7](https://github.com/embrajs/i18n/compare/v0.0.6...v0.0.7) (2026-04-03)
 
 ## [0.0.6](https://github.com/embrajs/i18n/compare/v0.0.5...v0.0.6) (2026-03-11)
