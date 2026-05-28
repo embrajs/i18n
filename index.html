@@ -80,6 +80,26 @@
           </p>
           <p>A lightweight, reactive internationalization library.</p>
           <p><img src="https://embrajs.github.io/i18n/assets/export-size.svg" alt="export size"></p>
+          <h2 id="for-ai-coding-agents" class="tsd-anchor-link">
+            For AI Coding Agents<a href="#for-ai-coding-agents" aria-label="Permalink" class="tsd-anchor-icon"
+              ><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a
+            >
+          </h2>
+          <p>
+            <code>@embra/i18n</code>
+            includes an <a href="media/llms.txt">llms.txt</a> quick guide for AI coding agents.
+          </p>
+          <p>
+            Copy this into another repository's <code>AGENTS.md</code> when that project uses <code>@embra/i18n</code>:
+          </p>
+          <pre><code class="md">`@embra/i18n` usage reference: `node_modules/@embra/i18n/llms.txt`.
+
+Canonical imports and slot syntax:
+- Core: import from `@embra/i18n`; template values use `{{name}}`.
+- React: import from `@embra/i18n/react`; React `<Trans>` uses `data-t-slot="name"`.
+- Astro: import from `@embra/i18n/astro`; Astro `<Trans>` uses `slot="name"`.
+</code><button type="button">Copy</button></pre>
+
           <h2 id="install" class="tsd-anchor-link">
             Install<a href="#install" aria-label="Permalink" class="tsd-anchor-icon"
               ><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a
@@ -361,6 +381,11 @@ const t = i18n.t;
             <div class="tsd-accordion-details">
               <a href="#embrai18n"><span>@embra/i18n</span></a>
               <ul>
+                <li>
+                  <a href="#for-ai-coding-agents"
+                    ><span>For <wbr>AI <wbr>Coding <wbr>Agents</span></a
+                  >
+                </li>
                 <li>
                   <a href="#install"><span>Install</span></a>
                 </li>
