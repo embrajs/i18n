@@ -48,7 +48,8 @@
   "sideEffects": false,
   "files": [
     "src",
-    "dist"
+    "dist",
+    "llms.txt"
   ],
   "author": {
     "name": "CRIMX",

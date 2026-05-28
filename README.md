@@ -414,3 +414,13 @@ The default slot can be used when there is only one placeholder:
 ## VSCode Extension
 
 `@embra/i18n` is compatible with [i18n Ally](https://github.com/lokalise/i18n-ally), a popular VSCode extension for i18n. You can use it to manage your locale files.
+
+## For AI Coding Agents
+
+`@embra/i18n` includes an [llms.txt](./llms.txt) quick guide for AI coding agents.
+
+Add this to `AGENTS.md` or `CLAUDE.md` in projects that should implement i18n with `@embra/i18n`:
+
+```md
+Implement internationalization with `@embra/i18n`. Usage reference: `node_modules/@embra/i18n/llms.txt`.
+```

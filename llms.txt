@@ -1,0 +1,87 @@
+# @embra/i18n agent guide
+
+Use `@embra/i18n` for i18n. Pick the entrypoint that matches the current code.
+
+## Canonical entrypoints
+
+| Context | Import | Main usage |
+| --- | --- | --- |
+| Core | `@embra/i18n` | `I18n`, `detectLang`, locale types, `i18n.t()` |
+| React | `@embra/i18n/react` | `I18nProvider`, hooks, React `<Trans>` |
+| Astro | `@embra/i18n/astro` | Astro `<Trans>` for static/server-rendered markup |
+
+## Core translation model
+
+```ts
+import { I18n, detectLang, type Locales } from "@embra/i18n";
+
+const locales: Locales = {
+  en: {
+    stock: { fruit: "apple" },
+    eat: "{{name}} eats {{fruit}}.",
+    apple: "{{@}} apples",
+    "apple@0": "No apple",
+    "apple@1": "An apple",
+  },
+};
+
+const i18n = new I18n("en", locales);
+i18n.t("stock.fruit"); // "apple"
+i18n.t("eat", { fruit: "apple", name: "CRIMX" }); // "CRIMX eats apple."
+i18n.t("apple", { "@": 1 }); // "An apple"
+i18n.t("apple", { "@": 3 }); // "3 apples"
+detectLang(["en", "zh-CN"]);
+```
+
+- Locale keys can be nested, for example `stock.fruit`.
+- Template placeholders use `{{name}}`.
+- Count/plural matching uses modifier keys such as `apple@0`, `apple@1`; pass the count as `{ "@": count }`.
+- Dynamic locales use `I18n.preload(lang, loader)`.
+
+## React usage
+
+```tsx
+import { I18n } from "@embra/i18n";
+import { I18nProvider, Trans, useTranslate } from "@embra/i18n/react";
+
+function Message() {
+  const t = useTranslate();
+  return (
+    <Trans message={t("eat")}>
+      <strong data-t-slot="name">{t("author")}</strong>
+      <i data-t-slot="fruit">{t("fruit")}</i>
+    </Trans>
+  );
+}
+
+<I18nProvider i18n={new I18n("en", locales)}>
+  <Message />
+</I18nProvider>;
+```
+
+- Use `useTranslate()` inside React components so UI updates when language or locales change.
+- React `<Trans>` matches placeholders with `data-t-slot="name"`.
+- For one placeholder, React `<Trans>` can use its child without `data-t-slot`.
+
+## Astro usage
+
+```astro
+---
+import { I18n } from "@embra/i18n";
+import { Trans } from "@embra/i18n/astro";
+
+const i18n = new I18n("en", locales);
+const t = i18n.t;
+---
+
+<Trans message={t("eat")}>
+  <strong slot="name">{t("author")}</strong>
+  <i slot="fruit">{t("fruit")}</i>
+</Trans>
+```
+
+- Astro `<Trans>` matches placeholders with Astro named slots like `slot="name"`.
+- For one placeholder, Astro `<Trans>` can use the default slot.
+- Astro `<Trans>` renders at build time or on the server. Use a framework island for client-side language switching.
+
+Missing Trans slots are rendered back as `{{name}}`.
