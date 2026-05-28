@@ -1,0 +1,35 @@
+---
+interface Props {
+  /**
+   * Translation template. Placeholders use `{{name}}` and are filled by Astro slots with the same name.
+   * When there is only one placeholder, the default slot can be used instead.
+   *
+   * @example
+   * ```astro
+   * <Trans message="a{{b}}c">
+   *   <strong>B</strong>
+   * </Trans>
+   * ```
+   */
+  message: string;
+}
+
+const { message = "" } = Astro.props;
+const parts = message.split(/{{(\S+?)}}/gi);
+const keys = parts.filter((_, i) => i % 2);
+const slots = new Map<string, string>();
+
+for (const key of keys) {
+  if (Astro.slots.has(key)) slots.set(key, await Astro.slots.render(key));
+}
+
+if (keys.length === 1 && !slots.has(keys[0]) && Astro.slots.has("default")) {
+  slots.set(keys[0], await Astro.slots.render("default"));
+}
+---
+
+{parts.map((part, i) => {
+  if (i % 2 === 0) return part;
+  const html = slots.get(part);
+  return html === undefined ? `{{${part}}}` : <Fragment set:html={html} />;
+})}

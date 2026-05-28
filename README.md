@@ -368,6 +368,49 @@ const App = () => {
 </>
 ```
 
+## Astro
+
+For static Astro pages, import the Astro component:
+
+```astro
+---
+import { I18n } from "@embra/i18n";
+import { Trans } from "@embra/i18n/astro";
+
+const locales = {
+  en: {
+    author: "CRIMX",
+    fruit: "apple",
+    eat: "{{name}} eats {{fruit}}.",
+  },
+};
+
+const i18n = new I18n("en", locales);
+const t = i18n.t;
+---
+
+<Trans message={t("eat")}>
+  <strong slot="name">{t("author")}</strong>
+  <i slot="fruit" style="color: red">{t("fruit")}</i>
+</Trans>
+```
+
+↓Outputs:
+
+```html
+<strong>CRIMX</strong> eats <i style="color: red">apple</i>.
+```
+
+The default slot can be used when there is only one placeholder:
+
+```astro
+<Trans message="a{{b}}c">
+  <strong>B</strong>
+</Trans>
+```
+
+`@embra/i18n/astro` is rendered by Astro at build time or on the server. It does not add client-side language switching by itself; use a framework island if the translated component needs to update in the browser.
+
 ## VSCode Extension
 
 `@embra/i18n` is compatible with [i18n Ally](https://github.com/lokalise/i18n-ally), a popular VSCode extension for i18n. You can use it to manage your locale files.

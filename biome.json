@@ -7,7 +7,7 @@
     "experimentalFullSupportEnabled": true
   },
   "files": {
-    "includes": ["**", "!dist", "!coverage", "!node_modules", "!docs"]
+    "includes": ["**", "!dist", "!coverage", "!node_modules", "!docs", "!.astro", "!.astro-cache"]
   },
   "formatter": {
     "indentStyle": "space",
@@ -26,5 +26,17 @@
         "useOptionalChain": "off"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.astro"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "useJsxKeyInIterable": "off"
+          }
+        }
+      }
+    }
+  ]
 }

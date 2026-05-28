@@ -37,7 +37,13 @@
         "types": "./dist/react.d.mts",
         "default": "./dist/react.mjs"
       }
-    }
+    },
+    "./astro": {
+      "types": "./src/astro/index.d.ts",
+      "import": "./src/astro/index.js",
+      "default": "./src/astro/index.js"
+    },
+    "./astro/Trans.astro": "./src/astro/Trans.astro"
   },
   "sideEffects": false,
   "files": [
@@ -55,6 +61,7 @@
     "lint:fix": "biome check --write",
     "lint:ci": "biome ci",
     "ts-check": "tsc --noEmit",
+    "astro-check": "astro-check --minimumSeverity error",
     "ts-watch": "tsc --noEmit -w",
     "docs": "typedoc --options typedoc.json && biome format --write --config-path=biome.docs.json --files-ignore-unknown=true docs && export-size-svg",
     "test": "vitest",
@@ -64,6 +71,8 @@
     "release": "commit-and-tag-version"
   },
   "keywords": [
+    "astro",
+    "astro-component",
     "internationalization",
     "i18n",
     "translation",
@@ -77,6 +86,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
     "@biomejs/biome": "^2.4.13",
     "@embra/reactivity": "^0.0.8",
     "@testing-library/react": "^16.3.2",
@@ -84,6 +94,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitest/coverage-v8": "^4.1.5",
+    "astro": "^6.4.0",
     "commit-and-tag-version": "^12.7.1",
     "export-size-svg": "^0.0.7",
     "jsdom": "^29.1.1",
@@ -92,16 +103,19 @@
     "tsdown": "^0.21.10",
     "typedoc": "^0.28.19",
     "typescript": "^6.0.3",
-    "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.0.6"
   },
   "peerDependencies": {
     "@embra/reactivity": "<=1",
     "@types/react": ">=18.0.0",
+    "astro": ">=4.0.0",
     "react": ">=18.0.0"
   },
   "peerDependenciesMeta": {
     "@types/react": {
+      "optional": true
+    },
+    "astro": {
       "optional": true
     },
     "react": {
