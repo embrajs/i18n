@@ -1,14 +1,16 @@
 # @embra/i18n agent guide
 
-Quick reference for AI coding agents. Use README.md for full docs.
+Use `@embra/i18n` for i18n. Pick the entrypoint that matches the current code.
 
-Install:
+## Canonical entrypoints
 
-```sh
-npm add @embra/reactivity @embra/i18n
-```
+| Context | Import | Main usage |
+| --- | --- | --- |
+| Core | `@embra/i18n` | `I18n`, `detectLang`, locale types, `i18n.t()` |
+| React | `@embra/i18n/react` | `I18nProvider`, hooks, React `<Trans>` |
+| Astro | `@embra/i18n/astro` | Astro `<Trans>` for static/server-rendered markup |
 
-## Core
+## Core translation model
 
 ```ts
 import { I18n, detectLang, type Locales } from "@embra/i18n";
@@ -31,12 +33,12 @@ i18n.t("apple", { "@": 3 }); // "3 apples"
 detectLang(["en", "zh-CN"]);
 ```
 
-- Translation keys can be nested, for example `stock.fruit`.
+- Locale keys can be nested, for example `stock.fruit`.
 - Template placeholders use `{{name}}`.
-- Plural/count matching uses modifier keys such as `apple@0`, `apple@1`; pass the value as `{ "@": count }`.
-- Use `I18n.preload(lang, loader)` for dynamic locale imports.
+- Count/plural matching uses modifier keys such as `apple@0`, `apple@1`; pass the count as `{ "@": count }`.
+- Dynamic locales use `I18n.preload(lang, loader)`.
 
-## React
+## React usage
 
 ```tsx
 import { I18n } from "@embra/i18n";
@@ -57,12 +59,11 @@ function Message() {
 </I18nProvider>;
 ```
 
-- React APIs come from `@embra/i18n/react`.
-- `useTranslate()` subscribes to language and locale changes.
-- React `<Trans>` uses `data-t-slot="name"` to match `{{name}}`.
+- Use `useTranslate()` inside React components so UI updates when language or locales change.
+- React `<Trans>` matches placeholders with `data-t-slot="name"`.
 - For one placeholder, React `<Trans>` can use its child without `data-t-slot`.
 
-## Astro
+## Astro usage
 
 ```astro
 ---
@@ -79,17 +80,8 @@ const t = i18n.t;
 </Trans>
 ```
 
-- Astro APIs come from `@embra/i18n/astro`; prefer `import { Trans } from "@embra/i18n/astro"`.
-- Astro `<Trans>` uses Astro named slots like `slot="name"` to match `{{name}}`.
+- Astro `<Trans>` matches placeholders with Astro named slots like `slot="name"`.
 - For one placeholder, Astro `<Trans>` can use the default slot.
 - Astro `<Trans>` renders at build time or on the server. Use a framework island for client-side language switching.
-
-## Canonical imports and slots
-
-| Context | Import | Trans slot syntax |
-| --- | --- | --- |
-| Core | `@embra/i18n` | `{{name}}` values |
-| React | `@embra/i18n/react` | `data-t-slot="name"` |
-| Astro | `@embra/i18n/astro` | `slot="name"` |
 
 Missing Trans slots are rendered back as `{{name}}`.
