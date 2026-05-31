@@ -14,22 +14,31 @@ interface Props {
   message: string;
 }
 
-const { message = "" } = Astro.props;
-const parts = message.split(/{{(\S+?)}}/gi);
-const keys = parts.filter((_, i) => i % 2);
-const slots = new Map<string, string>();
+type HtmlPart = { h: string };
 
-for (const key of keys) {
-  if (Astro.slots.has(key)) slots.set(key, await Astro.slots.render(key));
+const { message = "" } = Astro.props;
+const slices: Array<string | HtmlPart> = [];
+const matchArgs = /{{(\S+?)}}/gi;
+let slice: RegExpExecArray | null;
+let pointer = 0;
+let defaultSlotIndex = 0;
+
+while ((slice = matchArgs.exec(message))) {
+  const key = slice[1];
+  slices.push(message.slice(pointer, slice.index));
+  pointer = matchArgs.lastIndex;
+  if (Astro.slots.has(key)) {
+    slices.push({ h: await Astro.slots.render(key) });
+  } else {
+    defaultSlotIndex = slices.push(`{{${key}}}`) - 1;
+  }
 }
 
-if (keys.length === 1 && !slots.has(keys[0]) && Astro.slots.has("default")) {
-  slots.set(keys[0], await Astro.slots.render("default"));
+slices.push(message.slice(pointer));
+
+if (slices.length === 3 && defaultSlotIndex && Astro.slots.has("default")) {
+  slices[defaultSlotIndex] = { h: await Astro.slots.render("default") };
 }
 ---
 
-{parts.map((part, i) => {
-  if (i % 2 === 0) return part;
-  const html = slots.get(part);
-  return html === undefined ? `{{${part}}}` : <Fragment set:html={html} />;
-})}
+{slices.map((part) => (typeof part === "string" ? part : <Fragment set:html={part.h} />))}
