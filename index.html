@@ -278,21 +278,45 @@
               ><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a
             >
           </h2>
-          <p>For static Astro pages, import the Astro component:</p>
+          <p>
+            For static Astro pages, create cached translation helpers and get <code>t</code> from the route language:
+          </p>
           <pre><code class="astro">---
-import { I18n } from "@embra/i18n";
-import { Trans } from "@embra/i18n/astro";
+import { createStaticI18n } from "@embra/i18n/astro";
 
 const locales = {
   en: {
+    title: "Fruit stock",
     author: "CRIMX",
     fruit: "apple",
     eat: "{{name}} eats {{fruit}}.",
   },
+  zh: {
+    title: "水果库存",
+    author: "CRIMX",
+    fruit: "苹果",
+    eat: "{{name}} 吃 {{fruit}}。",
+  },
 };
 
-const i18n = new I18n("en", locales);
-const t = i18n.t;
+const { getT } = createStaticI18n({ locales, fallback: "en" });
+const t = getT(Astro.params.lang);
+---
+
+<h1>{t("title")}</h1>
+</code><button type="button">Copy</button></pre>
+
+          <p>
+            <code>fallback</code>
+            is used as the default language when <code>lang</code> is omitted and as the fallback language when a key is
+            missing.
+          </p>
+          <p>Use the Astro <code>&lt;Trans&gt;</code> component when a translated message needs Astro slots:</p>
+          <pre><code class="astro">---
+import { createStaticI18n, Trans } from "@embra/i18n/astro";
+
+const { getT } = createStaticI18n({ locales, fallback: "en" });
+const t = getT(Astro.params.lang);
 ---
 
 <Trans message={t("eat")}>

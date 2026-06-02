@@ -8,7 +8,7 @@ Use `@embra/i18n` for i18n. Pick the entrypoint that matches the current code.
 | --- | --- | --- |
 | Core | `@embra/i18n` | `I18n`, `detectLang`, locale types, `i18n.t()` |
 | React | `@embra/i18n/react` | `I18nProvider`, hooks, React `<Trans>` |
-| Astro | `@embra/i18n/astro` | Astro `<Trans>` for static/server-rendered markup |
+| Astro | `@embra/i18n/astro` | `createStaticI18n`, Astro `<Trans>` for static/server-rendered markup |
 
 ## Core translation model
 
@@ -67,11 +67,26 @@ function Message() {
 
 ```astro
 ---
-import { I18n } from "@embra/i18n";
-import { Trans } from "@embra/i18n/astro";
+import { createStaticI18n } from "@embra/i18n/astro";
 
-const i18n = new I18n("en", locales);
-const t = i18n.t;
+const { getT } = createStaticI18n({ locales, fallback: "en" });
+const t = getT(Astro.params.lang);
+---
+
+<h1>{t("title")}</h1>
+<p>{t("intro")}</p>
+```
+
+- Use `createStaticI18n()` in Astro frontmatter when the language comes from `Astro.params.lang`.
+- `fallback` is required and is used as both the default language and missing-key fallback language.
+- `createStaticI18n()` returns cached `{ getI18n, getT }` helpers with one static i18n instance per language.
+- Astro output is rendered at build time or on the server. Use a framework island if translated UI needs to update in the browser.
+
+Use Astro `<Trans>` only when a translated message needs Astro slots:
+
+```astro
+---
+import { Trans } from "@embra/i18n/astro";
 ---
 
 <Trans message={t("eat")}>
@@ -82,6 +97,5 @@ const t = i18n.t;
 
 - Astro `<Trans>` matches placeholders with Astro named slots like `slot="name"`.
 - For one placeholder, Astro `<Trans>` can use the default slot.
-- Astro `<Trans>` renders at build time or on the server. Use a framework island for client-side language switching.
 
 Missing Trans slots are rendered back as `{{name}}`.
