@@ -1,4 +1,31 @@
+import type { I18n, Locale, LocaleLang, Locales, TFunction } from "@embra/i18n";
 import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+
+export interface CreateStaticI18nOptions {
+  /** Locales available during the static build. */
+  locales: Locales;
+  /** Default language and fallback language if the current language doesn't have the requested key. */
+  fallback: LocaleLang;
+}
+
+export type StaticI18n = Pick<I18n, "lang" | "locale" | "locales" | "t" | "hasKey"> & {
+  readonly lang: LocaleLang;
+  readonly locale: Locale;
+  readonly locales: Locales;
+};
+
+export interface StaticI18nHelpers {
+  getI18n(lang?: LocaleLang): StaticI18n;
+  getT(lang?: LocaleLang): TFunction;
+}
+
+/**
+ * Create cached i18n helpers for Astro static pages.
+ *
+ * Each language gets its own `I18n` instance so parallel static rendering does not
+ * share mutable language state between pages.
+ */
+export declare function createStaticI18n(options: CreateStaticI18nOptions): StaticI18nHelpers;
 
 export interface TransProps {
   /**

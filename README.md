@@ -370,23 +370,44 @@ const App = () => {
 
 ## Astro
 
-For static Astro pages, import the Astro component:
+For static Astro pages, create cached translation helpers and get `t` from the route language:
 
 ```astro
 ---
-import { I18n } from "@embra/i18n";
-import { Trans } from "@embra/i18n/astro";
+import { createStaticI18n } from "@embra/i18n/astro";
 
 const locales = {
   en: {
+    title: "Fruit stock",
     author: "CRIMX",
     fruit: "apple",
     eat: "{{name}} eats {{fruit}}.",
   },
+  zh: {
+    title: "水果库存",
+    author: "CRIMX",
+    fruit: "苹果",
+    eat: "{{name}} 吃 {{fruit}}。",
+  },
 };
 
-const i18n = new I18n("en", locales);
-const t = i18n.t;
+const { getT } = createStaticI18n({ locales, fallback: "en" });
+const t = getT(Astro.params.lang);
+---
+
+<h1>{t("title")}</h1>
+```
+
+`fallback` is used as the default language when `lang` is omitted and as the fallback language when a key is missing.
+
+Use the Astro `<Trans>` component when a translated message needs Astro slots:
+
+```astro
+---
+import { createStaticI18n, Trans } from "@embra/i18n/astro";
+
+const { getT } = createStaticI18n({ locales, fallback: "en" });
+const t = getT(Astro.params.lang);
 ---
 
 <Trans message={t("eat")}>
