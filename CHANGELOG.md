@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.10](https://github.com/embrajs/i18n/compare/v0.0.9...v0.0.10) (2026-06-02)
+
+
+### Features
+
+* **astro:** add createStaticI18n ([3722c67](https://github.com/embrajs/i18n/commit/3722c6788fa9e3a57a50c0c87754cc01b841e36e))
+
 ## [0.0.9](https://github.com/embrajs/i18n/compare/v0.0.8...v0.0.9) (2026-05-31)
 
 ## [0.0.8](https://github.com/embrajs/i18n/compare/v0.0.7...v0.0.8) (2026-05-28)
