@@ -28,7 +28,7 @@ export const createTemplateMessageFn = (message: string): TemplateMessageFn | fa
 
   return (args: TFunctionArgs): string => {
     for (let i = keys.length - 1; i >= 0; i--) {
-      slices[i * 2 + 1] = args[keys[i]] ?? keys[i];
+      slices[i * 2 + 1] = args[keys[i]] ?? `{{${keys[i]}}}`;
     }
     return slices.join("");
   };

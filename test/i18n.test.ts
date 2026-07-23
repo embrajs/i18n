@@ -104,6 +104,7 @@ describe("template t function", () => {
     };
     const i18n = new I18n("en", locales);
     expect(i18n.t("intro", { name: "CRIMX", fruit: "apple" })).toBe("CRIMX eats apple");
+    expect(i18n.t("intro", { fruit: "apple" })).toBe("{{name}} eats apple");
   });
 
   it("should support array as args", () => {
@@ -166,6 +167,9 @@ describe("template t function", () => {
     expect(i18n.t("apple", { "@": 0, place: "house" })).toBe("No apple in the house");
     expect(i18n.t("apple", { "@": 1, place: "house" })).toBe("An apple in the house");
     expect(i18n.t("apple", { "@": 3, place: "house" })).toBe("3 apples in the house");
+    expect(i18n.t("apple", { "@": 1 })).toBe("An apple in the {{place}}");
+    expect(i18n.t("apple", { "@": 3 })).toBe("3 apples in the {{place}}");
+    expect(i18n.t("apple", { place: "house" })).toBe("{{@}} apples in the house");
   });
 
   it("should return key if message not exists", () => {

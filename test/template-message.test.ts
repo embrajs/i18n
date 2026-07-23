@@ -9,9 +9,10 @@ describe("template message", () => {
     expect(fn && fn({ name: "CRIMX", fruit: "banana" })).toBe("CRIMX eats banana");
   });
 
-  it("should fallback to key if args not provided", () => {
+  it("should keep placeholders whose args are not provided", () => {
     const fn = createTemplateMessageFn("Yesterday {{name}} found {{fruit}} and ate it");
-    expect(fn && fn({ fruit: "an apple" })).toBe("Yesterday name found an apple and ate it");
+    expect(fn && fn({ fruit: "an apple" })).toBe("Yesterday {{name}} found an apple and ate it");
+    expect(fn && fn({ name: null, fruit: "a pear" })).toBe("Yesterday {{name}} found a pear and ate it");
   });
 
   it("should support number as value", () => {

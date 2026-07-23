@@ -3,6 +3,7 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import { I18n } from "../../src";
 import { Trans } from "../../src/react";
 
 describe("Trans", () => {
@@ -79,5 +80,18 @@ describe("Trans", () => {
     );
 
     expect(container.innerHTML).toBe(`<h1 data-t-slot="a">A</h1>b{{c}}`);
+  });
+
+  it("should render placeholders left by partial translation", () => {
+    const i18n = new I18n("en", {
+      en: { message: "{{name}} has {{count}} apples" },
+    });
+    const { container } = render(
+      <Trans message={i18n.t("message", { count: 3 })}>
+        <strong data-t-slot="name">Alice</strong>
+      </Trans>,
+    );
+
+    expect(container.innerHTML).toBe(`<strong data-t-slot="name">Alice</strong> has 3 apples`);
   });
 });

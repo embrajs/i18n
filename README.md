@@ -104,6 +104,12 @@ const fruit = i18n.t("stock.fruit"); // apple
 i18n.t("fav_fruit", { fruit }); // I love apple
 ```
 
+Placeholders without a corresponding value are preserved. This allows the remaining placeholders to be processed later, such as by the [`Trans` component](#trans-component):
+
+```ts
+i18n.t("fav_fruit", {}); // I love {{fruit}}
+```
+
 It also works with array:
 
 ```ts
