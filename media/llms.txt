@@ -35,6 +35,7 @@ detectLang(["en", "zh-CN"]);
 
 - Locale keys can be nested, for example `stock.fruit`.
 - Template placeholders use `{{name}}`.
+- Placeholders without a corresponding interpolation value remain unchanged.
 - Count/plural matching uses modifier keys such as `apple@0`, `apple@1`; pass the count as `{ "@": count }`.
 - Dynamic locales use `I18n.preload(lang, loader)`.
 
