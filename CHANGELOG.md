@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.0](https://github.com/embrajs/i18n/compare/v0.0.10...v0.1.0) (2026-07-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* Missing interpolation values now remain as {{key}} instead of falling back to key.
+
+### Bug Fixes
+
+* preserve unresolved interpolation placeholders ([06b992d](https://github.com/embrajs/i18n/commit/06b992d95808a7b4bf55428d63d67e7c7ba4a353))
+
 ## [0.0.10](https://github.com/embrajs/i18n/compare/v0.0.9...v0.0.10) (2026-06-02)
 
 
