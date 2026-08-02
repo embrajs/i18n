@@ -103,7 +103,7 @@
     "react-dom": "^19.2.8",
     "tsdown": "^0.22.14",
     "typedoc": "^0.28.20",
-    "typescript": "^7.0.2",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
     "vitest": "^4.0.6"
   },
   "peerDependencies": {
