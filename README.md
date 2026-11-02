@@ -61,7 +61,7 @@ You can also create an `I18n` instance with preloaded dynamic locales:
 ```ts
 import { I18n } from "@embra/i18n";
 
-const i18n = await I18n.preload("en", lang => import(`./locales/${lang}.json`));
+const i18n = await I18n.preload("en", (lang) => import(`./locales/${lang}.json`));
 // Locale `./locales/en.json` is preloaded
 
 await i18n.switchLang("zh-CN"); // Locale `./locales/zh-CN.json` is loaded
@@ -79,7 +79,7 @@ detectLang(); // "en-US"
 const i18n = await I18n.preload(
   // language sub-tag is matched
   detectLang(["en", "zh-CN"]) || "zh-TW", // "en"
-  lang => import(`./locales/${lang}.json`),
+  (lang) => import(`./locales/${lang}.json`),
 );
 ```
 
@@ -167,12 +167,12 @@ See [Pluralization](#pluralization) for more examples.
 See [@embra/reactivity](https://github.com/embrajs/reactivity) for more details.
 
 ```js
-i18n.lang$.reaction(lang => {
+i18n.lang$.reaction((lang) => {
   // logs lang on changed
   console.log(lang);
 });
 
-i18n.lang$.subscribe(lang => {
+i18n.lang$.subscribe((lang) => {
   // logs lang immediately and on changed
   console.log(lang);
 });
@@ -187,14 +187,14 @@ import { I18n } from "@embra/i18n";
 
 // Module Login
 async function moduleLogin() {
-  const i18n = await I18n.preload("en", lang => import(`./locales/login/${lang}.json`));
+  const i18n = await I18n.preload("en", (lang) => import(`./locales/login/${lang}.json`));
 
   console.log(i18n.t("password"));
 }
 
 // Module About
 async function moduleAbout() {
-  const i18n = await I18n.preload("en", lang => import(`./locales/about/${lang}.json`));
+  const i18n = await I18n.preload("en", (lang) => import(`./locales/about/${lang}.json`));
 
   console.log(i18n.t("author"));
 }
@@ -205,7 +205,7 @@ async function moduleAbout() {
 To use [Vite HMR](https://vitejs.dev/guide/api-hmr.html) for locales:
 
 ```ts
-const i18n = await I18n.preload("en", lang => import(`./locales/${lang}.json`));
+const i18n = await I18n.preload("en", (lang) => import(`./locales/${lang}.json`));
 
 if (import.meta.hot) {
   import.meta.hot.accept(["./locales/en.json", "./locales/zh-CN.json"], ([en, zhCN]) => {
@@ -246,7 +246,7 @@ export const i18nLoader = (): Promise<I18n> => {
 
   const langs = Object.keys(localeLoaders);
 
-  return I18n.preload(detectLang(langs) || (localeLoaders.en ? "en" : langs[0]), lang => localeLoaders[lang]());
+  return I18n.preload(detectLang(langs) || (localeLoaders.en ? "en" : langs[0]), (lang) => localeLoaders[lang]());
 };
 ```
 
@@ -363,7 +363,7 @@ const App = () => {
 ```tsx
 <Trans message="a{{b}}c">
   <h1>B</h1>
-</Trans>
+</Trans>;
 ```
 
 ↓Outputs:
@@ -371,7 +371,7 @@ const App = () => {
 ```tsx
 <>
   a<h1>B</h1>c
-</>
+</>;
 ```
 
 ## Astro
@@ -425,7 +425,8 @@ const t = getT(Astro.params.lang);
 ↓Outputs:
 
 ```html
-<strong>CRIMX</strong> eats <i style="color: red">apple</i>.
+<strong>CRIMX</strong>
+eats <i style="color: red">apple</i>.
 ```
 
 The default slot can be used when there is only one placeholder:
