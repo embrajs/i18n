@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.1](https://github.com/embrajs/i18n/compare/v0.1.0...v0.1.1) (2026-11-23)
+
+### Bug Fixes
+
+* **peer-deps:** tighten @embra/reactivity range to <1 ([ec75e9a](https://github.com/embrajs/i18n/commit/ec75e9a6646e20ba16072c62fa9182c152888555))
+
 ## [0.1.0](https://github.com/embrajs/i18n/compare/v0.0.10...v0.1.0) (2026-07-23)
 
 
