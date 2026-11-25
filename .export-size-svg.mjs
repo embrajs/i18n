@@ -1,8 +1,21 @@
+import { pruneBranchesPlugin } from "@embra/esbuild-plugin-prune-branches";
 import { defineConfig } from "export-size-svg";
+
+import mangleCache from "./mangle-cache.json" with { type: "json" };
 
 export default defineConfig({
   title: "@embra/i18n",
   out: "./docs/assets",
+  esbuildOptions: {
+    sourcesContent: false,
+    define: {
+      __DEV__: "false",
+    },
+    mangleProps: /[^_]_$/,
+    mangleQuoted: true,
+    mangleCache,
+    plugins: [pruneBranchesPlugin({ __DEV__: false })],
+  },
   svg: {
     cardWidth: 400,
     theme: {

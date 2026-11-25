@@ -9,7 +9,7 @@ updates:
     directory: "/" # Location of package manifests
     versioning-strategy: "increase"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
     groups:
       dev-deps:
         dependency-type: "development"

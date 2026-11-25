@@ -1,0 +1,4 @@
+- **Verification**: Run `npm run check` after code changes (runs Biome, TypeScript, Astro check, Vitest with 100% coverage, and esbuild).
+- **Development Mode (`__DEV__`)**: Guard dev-only checks with `if (__DEV__) { ... }` (pruned in production builds). In tests, `__DEV__` defaults to `true`; call `setDevMode(false)` from `../test/setup` to cover production branches (auto-resets after each test).
+- **Pure ESM**: Entry points use conditional `exports` (`types`, `development`, `default`).
+- **Property mangling**: Single-trailing-underscore properties (e.g. `value_`) are mangled via `mangle-cache.json`. On changes to `mangle-cache.json`, name exported properties `_<a-zA-Z>` matching the original name where possible (e.g. `value_` -> `_v`).

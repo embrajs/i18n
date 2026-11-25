@@ -107,4 +107,8 @@ docs
 .astro
 .astro-cache
 
+# LLM
+.claude/*.local.json
+llms.txt
+
 .DS_Store

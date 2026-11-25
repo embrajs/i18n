@@ -11,6 +11,7 @@
     "hyrious",
     "lcov",
     "llms",
+    "loglevel",
     "microtask",
     "Parens",
     "pnpm",
@@ -30,7 +31,7 @@
     "**/node_modules/**",
     "**/dist/**",
     "cspell.config.js",
-    "pnpm-lock.yaml",
+    ".gitignore",
     "CHANGELOG.md"
   ]
 }

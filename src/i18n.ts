@@ -1,11 +1,4 @@
-import {
-  compute,
-  type OwnedReadable,
-  type OwnedWritable,
-  type Readable,
-  type Writable,
-  writable,
-} from "@embra/reactivity";
+import { computed, derived, type Owned, type Readable, type Writable, writable } from "@embra/reactivity";
 
 import { type FlatLocale, flattenLocale } from "./flat-locales";
 import type { Locale, LocaleFetcher, LocaleLang, Locales, TFunction, TFunctionArgs } from "./interface";
@@ -77,17 +70,18 @@ export class I18n {
 
     this.lang$ = writable(initialLang);
 
-    this.locale$ = compute((get) => get(this.locales$)[get(this.lang$)]);
+    this.locale$ = derived([this.locales$, this.lang$], (locale, lang) => locale[lang]);
 
-    this._l = compute((get) => flattenLocale(get(this.locale$)));
+    this._l = derived(this.locale$, flattenLocale);
 
-    const fallbackLocale$ = fallback && compute((get) => fallback !== get(this.lang$) && get(this.locales$)[fallback]);
+    const fallbackLocale$ =
+      fallback && derived([this.locales$, this.lang$], (locales, lang) => fallback !== lang && locales[fallback]);
 
-    this.t$ = compute((get) =>
+    this.t$ = computed(() =>
       translate.bind(
-        get(this._l),
+        this._l.value,
         new Map(),
-        get(fallbackLocale$) && translate.bind(flattenLocale(get(fallbackLocale$) as Locale), new Map(), ""),
+        fallbackLocale$ && fallbackLocale$.value && translate.bind(flattenLocale(fallbackLocale$.value), new Map(), ""),
       ),
     );
   }
@@ -121,11 +115,11 @@ export class I18n {
   }
 
   public dispose(): void {
-    (this.lang$ as OwnedReadable).dispose();
-    (this.t$ as OwnedReadable).dispose();
-    (this.locales$ as OwnedWritable).dispose();
-    (this.locale$ as OwnedReadable).dispose();
-    (this._l as OwnedReadable).dispose();
+    (this.lang$ as Owned<Readable>).dispose();
+    (this.t$ as Owned<Readable>).dispose();
+    (this.locales$ as Owned<Writable>).dispose();
+    (this.locale$ as Owned<Readable>).dispose();
+    (this._l as Owned<Readable>).dispose();
   }
 }
 

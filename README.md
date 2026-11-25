@@ -19,6 +19,16 @@ A lightweight, reactive internationalization library.
 npm add @embra/reactivity @embra/i18n
 ```
 
+### For AI Agents
+
+- Install the Agent Skill:
+
+  ```sh
+  npx skills add embrajs/i18n
+  ```
+
+- Or use the plain-text reference [llms.txt](https://embrajs.github.io/i18n/llms.txt) (also bundled at `node_modules/@embra/i18n/llms.txt`).
+
 ## Features
 
 - Subscribable reactive `lang$`, `t$` and `locales$`.
@@ -167,10 +177,13 @@ See [Pluralization](#pluralization) for more examples.
 See [@embra/reactivity](https://github.com/embrajs/reactivity) for more details.
 
 ```js
-i18n.lang$.reaction((lang) => {
-  // logs lang on changed
-  console.log(lang);
-});
+i18n.lang$.subscribe(
+  (lang) => {
+    // logs lang on changed
+    console.log(lang);
+  },
+  { immediate: false },
+);
 
 i18n.lang$.subscribe((lang) => {
   // logs lang immediately and on changed
@@ -442,13 +455,3 @@ The default slot can be used when there is only one placeholder:
 ## VSCode Extension
 
 `@embra/i18n` is compatible with [i18n Ally](https://github.com/lokalise/i18n-ally), a popular VSCode extension for i18n. You can use it to manage your locale files.
-
-## For AI Coding Agents
-
-`@embra/i18n` includes an [llms.txt](./llms.txt) quick guide for AI coding agents.
-
-Add this to `AGENTS.md` or `CLAUDE.md` in projects that should implement i18n with `@embra/i18n`:
-
-```md
-Implement internationalization with `@embra/i18n`. Usage reference: `node_modules/@embra/i18n/llms.txt`.
-```
