@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.0-rc.0](https://github.com/embrajs/i18n/compare/v0.1.1...v1.0.0-rc.0) (2026-11-25)
+
+### Features
+
+* **build:** add dev exports and branch pruning ([693b9ac](https://github.com/embrajs/i18n/commit/693b9acaf66ae7882faa07fa474c74af367c2f92))
+
+### Bug Fixes
+
+* **astro:** reuse slot render for duplicate placeholders ([a785cd2](https://github.com/embrajs/i18n/commit/a785cd23365692284d9ddacd0bf811f367f15988))
+* **i18n:** handle empty values and stale lang switches ([66d0f26](https://github.com/embrajs/i18n/commit/66d0f261e581add88704e3b703b060e5aa8553e9))
+* **i18n:** improve detectLang locale matching ([bf1a3a1](https://github.com/embrajs/i18n/commit/bf1a3a1a01329c4006fe5338c03e7e4c3093636d))
+* **react:** make translate fallback reactive ([2ef371b](https://github.com/embrajs/i18n/commit/2ef371bb710f9b9fc975ff53bec2a297745aa0a9))
+
 ## [0.1.1](https://github.com/embrajs/i18n/compare/v0.1.0...v0.1.1) (2026-11-23)
 
 ### Bug Fixes
