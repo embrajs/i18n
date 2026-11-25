@@ -36,6 +36,11 @@
       font-weight: 700
     }
 
+    .group-header {
+      font: 600 13px 'Segoe UI', Ubuntu, Sans-Serif;
+      fill: #fb4c1bf7;
+    }
+
     .text {
       font: 400 11px "Segoe UI", Ubuntu, Sans-Serif;
       fill: #f8f8f2;
@@ -84,12 +89,11 @@
     </g>
   </g>
 
-  <g transform="translate(0, 50)">
-    <svg x="25">
-      <g transform="translate(0, 0)">
+  <g transform="translate(25, 50)">
+    <g transform="translate(0, 0)">
   <g class="stagger" style="animation-delay: 100ms">
     <text x="2" y="15" class="text">export * from "@embra/i18n"</text>
-    <text x="315" y="34" class="text">892 B</text>
+    <text x="315" y="34" class="text">822 B</text>
 
     <svg width="300" x="0" y="25">
       <rect rx="5" ry="5" x="0" y="0" width="300" height="8" fill="#fb4c1b37"></rect>
@@ -103,17 +107,16 @@
 <g transform="translate(0, 40)">
   <g class="stagger" style="animation-delay: 250ms">
     <text x="2" y="15" class="text">export * from "@embra/i18n/react"</text>
-    <text x="315" y="34" class="text">609 B</text>
+    <text x="315" y="34" class="text">479 B</text>
 
     <svg width="300" x="0" y="25">
       <rect rx="5" ry="5" x="0" y="0" width="300" height="8" fill="#fb4c1b37"></rect>
-      <svg width="68.27354260089686%">
+      <svg width="58.27250608272506%">
         <rect height="8" fill="#fb4a1b" rx="5" ry="5" x="0" y="0" class="progress" style="animation-delay: 550ms" />
       </svg>
     </svg>
   </g>
 </g>
 
-    </svg>
   </g>
 </svg>

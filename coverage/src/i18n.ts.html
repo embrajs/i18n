@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../base.css" />
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="../theme.js"></script>
     <style type='text/css'>
         .coverage-summary .sorter {
             background-image: url(../sort-arrow-sprite.png);
@@ -19,27 +20,37 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
+        
+        <label class="theme-select quiet">
+            Theme
+            <select id="themeSelect" autocomplete="off">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="legacy">Legacy</option>
+            </select>
+        </label>
+
         <h1><a href="../index.html">All files</a> / <a href="index.html">src</a> i18n.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>44/44</span>
+                <span class='fraction'>43/43</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>30/30</span>
+                <span class='fraction'>31/31</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
@@ -213,20 +224,7 @@
 <a name='L148'></a><a href='#L148'>148</a>
 <a name='L149'></a><a href='#L149'>149</a>
 <a name='L150'></a><a href='#L150'>150</a>
-<a name='L151'></a><a href='#L151'>151</a>
-<a name='L152'></a><a href='#L152'>152</a>
-<a name='L153'></a><a href='#L153'>153</a>
-<a name='L154'></a><a href='#L154'>154</a>
-<a name='L155'></a><a href='#L155'>155</a>
-<a name='L156'></a><a href='#L156'>156</a>
-<a name='L157'></a><a href='#L157'>157</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L151'></a><a href='#L151'>151</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -300,7 +298,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">44x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -375,14 +374,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">57x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
-  compute,
-  type OwnedReadable,
-  type OwnedWritable,
-  type Readable,
-  type Writable,
-  writable,
-} from "@embra/reactivity";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { computed, derived, type Owned, type Readable, type Writable, writable } from "@embra/reactivity";
 &nbsp;
 import { type FlatLocale, flattenLocale } from "./flat-locales";
 import type { Locale, LocaleFetcher, LocaleLang, Locales, TFunction, TFunctionArgs } from "./interface";
@@ -454,17 +446,18 @@ export class I18n {
 &nbsp;
     this.lang$ = writable(initialLang);
 &nbsp;
-    this.locale$ = compute((get) =&gt; get(this.locales$)[get(this.lang$)]);
+    this.locale$ = derived([this.locales$, this.lang$], (locale, lang) =&gt; locale[lang]);
 &nbsp;
-    this._l = compute((get) =&gt; flattenLocale(get(this.locale$)));
+    this._l = derived(this.locale$, flattenLocale);
 &nbsp;
-    const fallbackLocale$ = fallback &amp;&amp; compute((get) =&gt; fallback !== get(this.lang$) &amp;&amp; get(this.locales$)[fallback]);
+    const fallbackLocale$ =
+      fallback &amp;&amp; derived([this.locales$, this.lang$], (locales, lang) =&gt; fallback !== lang &amp;&amp; locales[fallback]);
 &nbsp;
-    this.t$ = compute((get) =&gt;
+    this.t$ = computed(() =&gt;
       translate.bind(
-        get(this._l),
+        this._l.value,
         new Map(),
-        get(fallbackLocale$) &amp;&amp; translate.bind(flattenLocale(get(fallbackLocale$) as Locale), new Map(), ""),
+        fallbackLocale$ &amp;&amp; fallbackLocale$.value &amp;&amp; translate.bind(flattenLocale(fallbackLocale$.value), new Map(), ""),
       ),
     );
   }
@@ -498,11 +491,11 @@ export class I18n {
   }
 &nbsp;
   public dispose(): void {
-    (this.lang$ as OwnedReadable).dispose();
-    (this.t$ as OwnedReadable).dispose();
-    (this.locales$ as OwnedWritable).dispose();
-    (this.locale$ as OwnedReadable).dispose();
-    (this._l as OwnedReadable).dispose();
+    (this.lang$ as Owned&lt;Readable&gt;).dispose();
+    (this.t$ as Owned&lt;Readable&gt;).dispose();
+    (this.locales$ as Owned&lt;Writable&gt;).dispose();
+    (this.locale$ as Owned&lt;Readable&gt;).dispose();
+    (this._l as Owned&lt;Readable&gt;).dispose();
   }
 }
 &nbsp;
@@ -537,8 +530,8 @@ function translate(
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-11-23T15:05:08.354Z
+                <a href="https://vitest.dev/" target="_blank" rel="noopener noreferrer">Vitest</a>
+                at 2026-11-25T14:03:16.193Z
             </div>
         <script src="../prettify.js"></script>
         <script>
