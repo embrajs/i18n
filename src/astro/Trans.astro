@@ -18,6 +18,7 @@ type HtmlPart = { h: string };
 
 const { message = "" } = Astro.props;
 const slices: Array<string | HtmlPart> = [];
+const rendered: Record<string, HtmlPart> = {};
 const matchArgs = /{{(\S+?)}}/g;
 let slice: RegExpExecArray | null;
 let pointer = 0;
@@ -28,7 +29,7 @@ while ((slice = matchArgs.exec(message))) {
   slices.push(message.slice(pointer, slice.index));
   pointer = matchArgs.lastIndex;
   if (Astro.slots.has(key)) {
-    slices.push({ h: await Astro.slots.render(key) });
+    slices.push((rendered[key] ??= { h: await Astro.slots.render(key) }));
   } else {
     defaultSlotIndex = slices.push(`{{${key}}}`) - 1;
   }

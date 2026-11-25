@@ -28,4 +28,10 @@ describe("Astro Trans", () => {
   it("should escape message text and preserve slot html", async () => {
     expect(await render("{{x}} & <safe>", { x: "<strong>X</strong>" })).toBe("<strong>X</strong> &amp; &lt;safe&gt;");
   });
+
+  it("should reuse rendered slot for repeated placeholders", async () => {
+    expect(await render("{{name}} / {{name}}", { name: "<strong>CRIMX</strong>" })).toBe(
+      "<strong>CRIMX</strong> / <strong>CRIMX</strong>",
+    );
+  });
 });
