@@ -81,6 +81,9 @@ export const Trans: FC<PropsWithChildren<TProps>> = ({ message, children }) => {
   if (!hasSlot && slices.length === 3) {
     copy[1] = children ?? `{{${slices[1]}}}`;
   } else {
+    if (__DEV__ && !hasSlot && children != null) {
+      console.warn(`[@embra/i18n] <Trans> has multiple placeholders; use "data-t-slot" on children.`);
+    }
     for (let i = 1; i < copy.length; i += 2) {
       copy[i] = slots[slices[i]] ?? `{{${slices[i]}}}`;
     }

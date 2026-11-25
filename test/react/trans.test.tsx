@@ -1,10 +1,11 @@
 // @vitest-environment jsdom
 
 import { render } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { I18n } from "../../src";
 import { Trans } from "../../src/react";
+import { setDevMode } from "../setup";
 
 describe("Trans", () => {
   it("should render nothing for empty message", () => {
@@ -105,5 +106,26 @@ describe("Trans", () => {
     const { container } = render(<Trans message="count: {{n}}">{0}</Trans>);
 
     expect(container.innerHTML).toBe("count: 0");
+  });
+
+  it("should warn in dev mode when multiple placeholders lack data-t-slot", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    render(
+      <Trans message="a{{b}}c{{d}}e">
+        <span>X</span>
+      </Trans>,
+    );
+    expect(warn).toHaveBeenCalledTimes(1);
+
+    setDevMode(false);
+    render(
+      <Trans message="a{{b}}c{{d}}e">
+        <span>X</span>
+      </Trans>,
+    );
+    expect(warn).toHaveBeenCalledTimes(1);
+
+    warn.mockRestore();
   });
 });

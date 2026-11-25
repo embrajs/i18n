@@ -1,4 +1,4 @@
-import { computed, derived, type Owned, type Readable, type Writable, writable } from "@embra/reactivity";
+import { derived, type Owned, type Readable, type Writable, writable } from "@embra/reactivity";
 
 import { type FlatLocale, flattenLocale } from "./flat-locales";
 import type { Locale, LocaleFetcher, LocaleLang, Locales, TFunction, TFunctionArgs } from "./interface";
@@ -62,13 +62,13 @@ export class I18n {
   }
 
   /** @internal */
-  private readonly _l: Readable<FlatLocale>;
+  private readonly flatLocale_: Readable<FlatLocale>;
 
   /** @internal */
-  private readonly _b?: Readable<Locale | false>;
+  private readonly fallbackLocale_?: Readable<Locale | false>;
 
   /** @internal */
-  private _s = 0;
+  private switchSeq_ = 0;
 
   public constructor(initialLang: LocaleLang, locales: Locales, options?: I18nOptions) {
     this.fetcher = options?.fetcher;
@@ -80,18 +80,14 @@ export class I18n {
 
     this.locale$ = derived([this.locales$, this.lang$], (locale, lang) => locale[lang]);
 
-    this._l = derived(this.locale$, flattenLocale);
+    this.flatLocale_ = derived(this.locale$, flattenLocale);
 
-    this._b = fallback
+    this.fallbackLocale_ = fallback
       ? derived([this.locales$, this.lang$], (locales, lang) => fallback !== lang && locales[fallback])
       : undefined;
 
-    this.t$ = computed(() =>
-      translate.bind(
-        this._l.value,
-        new Map(),
-        this._b && this._b.value && translate.bind(flattenLocale(this._b.value), new Map(), ""),
-      ),
+    this.t$ = derived([this.flatLocale_, this.fallbackLocale_], (flatLocale, fallbackLocale) =>
+      translate.bind(flatLocale, {}, fallbackLocale && translate.bind(flattenLocale(fallbackLocale), {}, "")),
     );
   }
 
@@ -101,11 +97,15 @@ export class I18n {
    * @returns — a promise that resolves when the new locale is fetched.
    */
   public async switchLang(lang: LocaleLang): Promise<void> {
-    const seq = ++this._s;
-    if (!this.locales$.get()[lang] && this.fetcher) {
-      this.addLocale(lang, await this.fetcher(lang));
+    const seq = ++this.switchSeq_;
+    if (!this.locales$.get()[lang]) {
+      if (this.fetcher) {
+        this.addLocale(lang, await this.fetcher(lang));
+      } else if (__DEV__) {
+        console.warn(`[@embra/i18n] Locale "${lang}" not found and no fetcher configured.`);
+      }
     }
-    if (seq === this._s) {
+    if (seq === this.switchSeq_) {
       (this.lang$ as Writable<LocaleLang>).set(lang);
     }
   }
@@ -114,7 +114,7 @@ export class I18n {
    * @returns — boolean indicating whether a message with the specified key in current language exists or not.
    */
   public hasKey(key: string): boolean {
-    return this._l.get()[key] !== undefined;
+    return this.flatLocale_.get()[key] !== undefined;
   }
 
   /**
@@ -131,8 +131,8 @@ export class I18n {
     (this.t$ as Owned<Readable>).dispose();
     (this.locales$ as Owned<Writable>).dispose();
     (this.locale$ as Owned<Readable>).dispose();
-    (this._l as Owned<Readable>).dispose();
-    (this._b as Owned<Readable> | undefined)?.dispose();
+    (this.flatLocale_ as Owned<Readable>).dispose();
+    (this.fallbackLocale_ as Owned<Readable> | undefined)?.dispose();
   }
 }
 
@@ -153,8 +153,7 @@ function translate(
       }
     }
     if (this[rawKey] !== undefined) {
-      let fn = localeFns.get(rawKey);
-      fn ?? localeFns.set(rawKey, (fn = createTemplateMessageFn(this[rawKey])));
+      const fn = (localeFns[rawKey] ??= createTemplateMessageFn(this[rawKey]));
       if (fn) {
         return fn(args);
       }

@@ -1,6 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { I18n, type LocaleFetcher, type Locales } from "../src";
+import { setDevMode } from "./setup";
 
 describe("i18n", () => {
   it("smoke test", () => {
@@ -112,6 +113,20 @@ describe("switchLang concurrency", () => {
     await pZh;
     expect(i18n.lang).toBe("ja");
     expect(i18n.t("apple")).toBe("りんご");
+  });
+
+  it("should warn in dev mode when switching to unloaded locale without fetcher", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const i18n = new I18n("en", { en: { apple: "apple" } });
+
+    await i18n.switchLang("zh");
+    expect(warn).toHaveBeenCalledTimes(1);
+
+    setDevMode(false);
+    await i18n.switchLang("ja");
+    expect(warn).toHaveBeenCalledTimes(1);
+
+    warn.mockRestore();
   });
 });
 
