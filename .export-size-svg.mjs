@@ -26,14 +26,29 @@ export default defineConfig({
   },
   exports: [
     {
-      title: 'export * from "@embra/i18n"',
-      code: "export * from './src'",
-      externals: ["@embra/i18n", "@embra/reactivity", "react"],
+      title: 'import { ... } from "@embra/i18n"',
+      exports: [
+        {
+          title: "{ I18n }",
+          code: "export { I18n } from './src'",
+          externals: ["@embra/i18n", "@embra/reactivity", "react"],
+        },
+        {
+          title: "{ detectLang }",
+          code: "export { detectLang } from './src'",
+          externals: ["@embra/i18n", "@embra/reactivity", "react"],
+        },
+      ],
     },
     {
-      title: 'export * from "@embra/i18n/react"',
-      code: "export * from './src/react'",
-      externals: ["@embra/i18n", "@embra/reactivity", "react"],
+      title: 'import { ... } from "@embra/i18n/react"',
+      exports: [
+        {
+          title: "{ I18nProvider, useTranslate, useLang, useI18n, Trans }",
+          code: "export { I18nProvider, useTranslate, useLang, useI18n, Trans } from './src/react'",
+          externals: ["@embra/i18n", "@embra/reactivity", "react"],
+        },
+      ],
     },
   ],
 });
