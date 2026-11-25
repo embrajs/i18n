@@ -1,9 +1,10 @@
 import type { I18n, LocaleLang, TFunction, TFunctionArgs } from "@embra/i18n";
-import { useValue } from "@embra/reactivity/react";
+import type { Readable } from "@embra/reactivity";
+import { useDerived, useValue } from "@embra/reactivity/react";
 import { createContext, createElement, type FC, type PropsWithChildren, useContext, useMemo } from "react";
 
 interface Ctx {
-  t: TFunction;
+  t$: Readable<TFunction>;
   i18n: I18n;
 }
 
@@ -23,22 +24,18 @@ export interface I18nProviderProps {
  * </I18nProvider>
  */
 export const I18nProvider: FC<PropsWithChildren<I18nProviderProps>> = ({ i18n, children }) => {
-  const currentT = useValue(i18n.t$);
-  const depT = useContext(I18nContext)?.t;
+  const depT$ = useContext(I18nContext)?.t$;
+  const t$ = useDerived([i18n.t$, depT$], (currentT, depT) =>
+    depT
+      ? (keyPath: string, args?: TFunctionArgs): string => {
+          const result = currentT(keyPath, args);
+          return result === keyPath ? depT(keyPath, args) : result;
+        }
+      : currentT,
+  );
 
   return createElement(I18nContext.Provider, {
-    value: useMemo(
-      () => ({
-        t: depT
-          ? (keyPath: string, args?: TFunctionArgs): string => {
-              const result = currentT(keyPath, args);
-              return result === keyPath ? depT(keyPath, args) : result;
-            }
-          : currentT,
-        i18n,
-      }),
-      [currentT, depT, i18n],
-    ),
+    value: useMemo(() => ({ t$, i18n }), [t$, i18n]),
     children,
   });
 };
@@ -67,7 +64,7 @@ export interface UseTranslate {
  * @returns A {@link TFunction} that translates the key from the nearest {@link I18nProvider} and fallbacks outwards.
  * If no {@link I18nProvider} found, throws an error unless `optional` is true.
  */
-export const useTranslate: UseTranslate = ((optional) => useI18nCtx(optional)?.t) as UseTranslate;
+export const useTranslate: UseTranslate = ((optional) => useValue(useI18nCtx(optional)?.t$)) as UseTranslate;
 
 export interface UseI18n {
   (): I18n;

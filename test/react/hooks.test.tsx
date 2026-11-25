@@ -33,6 +33,26 @@ describe("useI18n", () => {
     const { result } = renderHook(() => useI18n(true));
     expect(result.current).toBeUndefined();
   });
+
+  it("should not re-render on language change", async () => {
+    const locales: Locales = { en: { fruit: "apple" }, zh: { fruit: "苹果" } };
+    const i18n = new I18n("en", locales);
+    let renders = 0;
+    const wrapper: React.FC<PropsWithChildren> = ({ children }) => <I18nProvider i18n={i18n}>{children}</I18nProvider>;
+    const { result } = renderHook(
+      () => {
+        renders++;
+        return useI18n();
+      },
+      { wrapper },
+    );
+
+    expect(result.current).toBe(i18n);
+    expect(renders).toBe(1);
+
+    await act(async () => i18n.switchLang("zh"));
+    expect(renders).toBe(1);
+  });
 });
 
 describe("useTranslate", () => {
@@ -79,6 +99,21 @@ describe("useTranslate", () => {
     expect(result.current("fruit")).toBe("fruit_en");
     expect(result.current("empty")).toBe("");
     expect(result.current("not exist")).toBe("not exist");
+  });
+
+  it("should update cascading t function when outer i18n changes lang", async () => {
+    const outer = new I18n("en", { en: { apple: "apple" }, zh: { apple: "苹果" } });
+    const inner = new I18n("en", { en: { banana: "banana" } });
+    const wrapper: React.FC<PropsWithChildren> = ({ children }) => (
+      <I18nProvider i18n={outer}>
+        <I18nProvider i18n={inner}>{children}</I18nProvider>
+      </I18nProvider>
+    );
+    const { result } = renderHook(() => useTranslate(), { wrapper });
+
+    expect(result.current("apple")).toBe("apple");
+    await act(async () => outer.switchLang("zh"));
+    expect(result.current("apple")).toBe("苹果");
   });
 
   it("should throw error if no i18n context", () => {
