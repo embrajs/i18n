@@ -24,7 +24,8 @@ export function detectLang(langs?: readonly string[]): string | null {
     // BCP 47 tags are case-insensitive
     const lowerCaseLocale = locale.toLowerCase();
     for (const lang of langs) {
-      if (lowerCaseLocale.startsWith(lang.toLowerCase())) {
+      const lowerCaseLang = lang.toLowerCase();
+      if (lowerCaseLocale === lowerCaseLang || lowerCaseLocale.startsWith(`${lowerCaseLang}-`)) {
         return lang;
       }
     }

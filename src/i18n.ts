@@ -18,10 +18,12 @@ export class I18n {
     fetcher: LocaleFetcher,
     options?: Omit<I18nOptions, "fetcher">,
   ): Promise<I18n> {
-    const locales = { [initialLang]: await fetcher(initialLang) };
+    const p = fetcher(initialLang);
     const fallback = options?.fallback;
-    if (fallback && fallback !== initialLang) {
-      locales[fallback] = await fetcher(fallback);
+    const fb = fallback && fallback !== initialLang && fetcher(fallback);
+    const locales: Record<LocaleLang, Locale> = { [initialLang]: await p };
+    if (fb) {
+      locales[fallback] = await fb;
     }
     return new I18n(initialLang, locales, { ...options, fetcher });
   }
@@ -62,6 +64,12 @@ export class I18n {
   /** @internal */
   private readonly _l: Readable<FlatLocale>;
 
+  /** @internal */
+  private readonly _b?: Readable<Locale | false>;
+
+  /** @internal */
+  private _s = 0;
+
   public constructor(initialLang: LocaleLang, locales: Locales, options?: I18nOptions) {
     this.fetcher = options?.fetcher;
     const fallback = options?.fallback;
@@ -74,14 +82,15 @@ export class I18n {
 
     this._l = derived(this.locale$, flattenLocale);
 
-    const fallbackLocale$ =
-      fallback && derived([this.locales$, this.lang$], (locales, lang) => fallback !== lang && locales[fallback]);
+    this._b = fallback
+      ? derived([this.locales$, this.lang$], (locales, lang) => fallback !== lang && locales[fallback])
+      : undefined;
 
     this.t$ = computed(() =>
       translate.bind(
         this._l.value,
         new Map(),
-        fallbackLocale$ && fallbackLocale$.value && translate.bind(flattenLocale(fallbackLocale$.value), new Map(), ""),
+        this._b && this._b.value && translate.bind(flattenLocale(this._b.value), new Map(), ""),
       ),
     );
   }
@@ -92,17 +101,20 @@ export class I18n {
    * @returns — a promise that resolves when the new locale is fetched.
    */
   public async switchLang(lang: LocaleLang): Promise<void> {
+    const seq = ++this._s;
     if (!this.locales$.get()[lang] && this.fetcher) {
       this.addLocale(lang, await this.fetcher(lang));
     }
-    (this.lang$ as Writable<LocaleLang>).set(lang);
+    if (seq === this._s) {
+      (this.lang$ as Writable<LocaleLang>).set(lang);
+    }
   }
 
   /**
    * @returns — boolean indicating whether a message with the specified key in current language exists or not.
    */
   public hasKey(key: string): boolean {
-    return !!this._l.get()[key];
+    return this._l.get()[key] !== undefined;
   }
 
   /**
@@ -120,6 +132,7 @@ export class I18n {
     (this.locales$ as Owned<Writable>).dispose();
     (this.locale$ as Owned<Readable>).dispose();
     (this._l as Owned<Readable>).dispose();
+    (this._b as Owned<Readable> | undefined)?.dispose();
   }
 }
 
@@ -130,21 +143,22 @@ function translate(
   key: string,
   args?: TFunctionArgs,
 ): string {
+  let rawKey = key;
   if (args) {
     const modifier = args["@"];
     if (modifier != null) {
       const modifierKey = `${key}@${modifier}`;
-      if (this[modifierKey]) {
-        key = modifierKey;
+      if (this[modifierKey] !== undefined) {
+        rawKey = modifierKey;
       }
     }
-    if (this[key]) {
-      let fn = localeFns.get(key);
-      fn ?? localeFns.set(key, (fn = createTemplateMessageFn(this[key])));
+    if (this[rawKey] !== undefined) {
+      let fn = localeFns.get(rawKey);
+      fn ?? localeFns.set(rawKey, (fn = createTemplateMessageFn(this[rawKey])));
       if (fn) {
         return fn(args);
       }
     }
   }
-  return this[key] || (fallbackT && fallbackT(key, args)) || key;
+  return this[rawKey] ?? (fallbackT ? fallbackT(key, args) : key);
 }

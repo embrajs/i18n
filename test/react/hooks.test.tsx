@@ -59,9 +59,9 @@ describe("useTranslate", () => {
   });
 
   it("should fallback to outer t function", () => {
-    const locales1: Locales = { en: { apple: "apple_en" } };
+    const locales1: Locales = { en: { apple: "apple_en", empty: "outer" } };
     const i18n1 = new I18n("en", locales1);
-    const locales2: Locales = { en: { banana: "banana_en" } };
+    const locales2: Locales = { en: { banana: "banana_en", empty: "" } };
     const i18n2 = new I18n("en", locales2);
     const locales3: Locales = { en: { fruit: "fruit_en" } };
     const i18n3 = new I18n("en", locales3);
@@ -77,6 +77,7 @@ describe("useTranslate", () => {
     expect(result.current("apple")).toBe("apple_en");
     expect(result.current("banana")).toBe("banana_en");
     expect(result.current("fruit")).toBe("fruit_en");
+    expect(result.current("empty")).toBe("");
     expect(result.current("not exist")).toBe("not exist");
   });
 

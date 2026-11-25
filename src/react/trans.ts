@@ -48,7 +48,7 @@ export interface TProps {
 export const Trans: FC<PropsWithChildren<TProps>> = ({ message, children }) => {
   const slices = useMemo(() => {
     const slices: string[] = [];
-    const matchArgs = /{{(\S+?)}}/gi;
+    const matchArgs = /{{(\S+?)}}/g;
     let slice: RegExpExecArray | null;
     let pointer = 0;
     while ((slice = matchArgs.exec(message))) {
@@ -78,12 +78,12 @@ export const Trans: FC<PropsWithChildren<TProps>> = ({ message, children }) => {
   }
 
   const copy: ReactNode[] = slices.slice();
-  if (hasSlot) {
-    for (let i = 1; i < copy.length; i += 2) {
-      copy[i] = slots[slices[i]] || `{{${slices[i]}}}`;
-    }
+  if (!hasSlot && slices.length === 3) {
+    copy[1] = children ?? `{{${slices[1]}}}`;
   } else {
-    copy[1] = children || `{{${slices[1]}}}`;
+    for (let i = 1; i < copy.length; i += 2) {
+      copy[i] = slots[slices[i]] ?? `{{${slices[i]}}}`;
+    }
   }
-  return createElement(Fragment, null, copy);
+  return createElement(Fragment, null, ...copy);
 };

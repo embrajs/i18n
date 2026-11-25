@@ -59,13 +59,59 @@ describe("i18n", () => {
 
   it("should check if message key-path exists", () => {
     const locales: Locales = {
-      en: { apple: "apple", person: { name: "CRIMX" } },
+      en: { apple: "apple", person: { name: "CRIMX" }, empty: "" },
     };
     const i18n = new I18n("en", locales);
 
     expect(i18n.hasKey("apple")).toBe(true);
+    expect(i18n.hasKey("empty")).toBe(true);
     expect(i18n.hasKey("name")).toBe(false);
     expect(i18n.hasKey("person.name")).toBe(true);
+  });
+
+  it("should support empty string translations without falling back", () => {
+    const locales: Locales = {
+      en: { empty: "fallback", "item@0": "none", item: "{{@}} items" },
+      zh: { empty: "", "item@0": "" },
+    };
+    const i18n = new I18n("zh", locales, { fallback: "en" });
+
+    expect(i18n.t("empty")).toBe("");
+    expect(i18n.t("empty", { a: 1 })).toBe("");
+    expect(i18n.t("item", { "@": 0 })).toBe("");
+  });
+
+  it("should dispose fallback observable", () => {
+    const i18n = new I18n("zh", { en: { apple: "apple" }, zh: {} }, { fallback: "en" });
+    expect(i18n.t("apple")).toBe("apple");
+    i18n.dispose();
+  });
+});
+
+describe("switchLang concurrency", () => {
+  it("should ignore stale switchLang results", async () => {
+    let resolveZh!: (locale: Locales[string]) => void;
+    let resolveJa!: (locale: Locales[string]) => void;
+    const fetcher: LocaleFetcher = (lang) =>
+      new Promise((resolve) => {
+        if (lang === "zh") resolveZh = resolve;
+        else if (lang === "ja") resolveJa = resolve;
+      });
+
+    const i18n = new I18n("en", { en: { apple: "apple" } }, { fetcher });
+
+    const pZh = i18n.switchLang("zh");
+    const pJa = i18n.switchLang("ja");
+
+    resolveJa({ apple: "りんご" });
+    await pJa;
+    expect(i18n.lang).toBe("ja");
+    expect(i18n.t("apple")).toBe("りんご");
+
+    resolveZh({ apple: "苹果" });
+    await pZh;
+    expect(i18n.lang).toBe("ja");
+    expect(i18n.t("apple")).toBe("りんご");
   });
 });
 

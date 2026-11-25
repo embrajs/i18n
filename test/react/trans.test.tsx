@@ -94,4 +94,16 @@ describe("Trans", () => {
 
     expect(container.innerHTML).toBe(`<strong data-t-slot="name">Alice</strong> has 3 apples`);
   });
+
+  it("should preserve all placeholders when multiple placeholders have no slots", () => {
+    const { container } = render(<Trans message="a{{b}}c{{d}}e"></Trans>);
+
+    expect(container.innerHTML).toBe("a{{b}}c{{d}}e");
+  });
+
+  it("should render 0 as single placeholder child", () => {
+    const { container } = render(<Trans message="count: {{n}}">{0}</Trans>);
+
+    expect(container.innerHTML).toBe("count: 0");
+  });
 });

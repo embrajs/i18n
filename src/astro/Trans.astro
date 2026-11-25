@@ -18,7 +18,7 @@ type HtmlPart = { h: string };
 
 const { message = "" } = Astro.props;
 const slices: Array<string | HtmlPart> = [];
-const matchArgs = /{{(\S+?)}}/gi;
+const matchArgs = /{{(\S+?)}}/g;
 let slice: RegExpExecArray | null;
 let pointer = 0;
 let defaultSlotIndex = 0;

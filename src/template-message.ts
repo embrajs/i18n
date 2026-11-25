@@ -12,7 +12,7 @@ export type LocaleTemplateMessageFns = Map<string, TemplateMessageFn | false>;
 export const createTemplateMessageFn = (message: string): TemplateMessageFn | false => {
   const slices: string[] = [];
   const keys: string[] = [];
-  const matchArgs = /{{(\S+?)}}/gi;
+  const matchArgs = /{{(\S+?)}}/g;
   let slice: RegExpExecArray | null;
   let pointer = 0;
   while ((slice = matchArgs.exec(message))) {

@@ -29,4 +29,9 @@ describe("detectLang", () => {
     const localeLower = localeUpper.toLowerCase();
     expect(detectLang(["example", localeLower, "fr"])).toBe(localeLower);
   });
+
+  it("should not match partial sub-tag prefixes", () => {
+    const locale = Intl.DateTimeFormat().resolvedOptions().locale;
+    expect(detectLang([locale[0]])).toBe(null);
+  });
 });
